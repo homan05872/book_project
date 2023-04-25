@@ -10,6 +10,8 @@ class ListBook(ListView):
     modle = Book
     queryset = Book.objects.all().select_related()
     
+    
+    
     # def get_queryset(self):
     #     query = self.request.GET.get('query')
 
