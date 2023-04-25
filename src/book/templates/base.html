@@ -12,7 +12,9 @@
     
         <title>{% block title %}{% endblock title %}</title>
         
+        <!--head タグ継承-->
         {% block head %}{% endblock head %}
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
@@ -23,6 +25,7 @@
       </head>
       <body>
 
+        <!--nav.html タグ継承-->
         {% include 'templateh/nav.html' %}
         
 
