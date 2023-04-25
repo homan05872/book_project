@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}詳細画面{% endblock title %}
+{% block title %}レビュー詳細{% endblock title %}
 
 {% block content %}
+<div class="container">
+<h1>レビュー詳細</h1>
 
-{{ object.title }}
-{{ object.text }}
-{{ object.category }}
+<h3>{{ object.title }}</h3>
+<p>{{ object.text }}</p>
+
+カテゴリ:{{ object.category }}
+<br>
+<a href="{% url 'update' object.pk %}">編集する</a>
+<a href="{% url 'delete' object.pk %}">削除する</a>
+</div>
+
 
 {% endblock content %}
+
+
 
 
