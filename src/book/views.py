@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView,TemplateView
 from .models import Book
+
+class IndexBook(TemplateView):
+    template_name = 'book/index.html'
 
 class ListBook(ListView):
     template_name = 'book/book_list.html'

@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
 {% block title %}{{ object.title }}{% endblock title %}
 
+{% block head %}<link rel="stylesheet" href="{% static 'css/delete.css' %}">{% endblock head %}
+
 {% block content %}
-
-<form method='POST'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">{{ object.title }}を削除する</button>
-</form>
-
+<div class="container">
+    <div class="flex">
+        
+            <h2>削除してしまうと復元出来ません。本当に削除しますか。</h2>
+        
+            <form method='POST'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button  type="submit">{{ object.title }}を削除する</button>
+        </form>
+        
+    </div>
+</div>
 {% endblock content %}

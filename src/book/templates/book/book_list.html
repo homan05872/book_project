@@ -1,12 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}書籍一覧{% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/book_list.css' %}">
+{% endblock head %}
+
+
+{% block title %}Book 一覧{% endblock title %}
 {% block content %}
-{% for book in object_list %}
-<ul>
-    <li>{{book.title}}</li>
-    <li>{{book.text}}</li>
-    <li>{{book.category}}</li>
-</ul>
-{% endfor %}
+
+<h1 class='m-5'>Book 一覧ページ</h1>
+
+<div class="container">
+    
+<table class="table">
+    <div class='row'>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">タイトル</th>
+        <th scope="col">コメント</th>
+        <th scope="col">カテゴリ</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for book in object_list %}
+      <tr>
+        <th scope="row">{{book.pk}}</th>
+        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.title}}</a></td>
+        <td>{{book.text}}</td>
+        <td>{{book.category}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
 {% endblock content %}

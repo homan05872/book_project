@@ -3,10 +3,15 @@
 {% block title %}新規作成{% endblock title %}
 
 {% block content %}
-<h1>紹介したい本のレビューを記載してください。</h1>
+
+<div class="container">
+
+<h1 class='my-5'>紹介したい本のレビューを記載してください。</h1>
 {% csrf_token %}
 <form mthod='POST'>
     {{form.as_p}}
     <input type="submit" value='作成する'>
 </form>
+
+</div>
 {% endblock content %}
