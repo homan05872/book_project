@@ -8,10 +8,7 @@
         {% for error in form.errors.values %}
             {{error}}
         {% endfor %}
-            <label>ユーザーID</label>
-            <input name="username">
-            <label>パスワード</label>
-            <input type="password" name="password">
+        {{form.as_p}}
             <button type="submit">ログインする</button>
     </form>
 </div>

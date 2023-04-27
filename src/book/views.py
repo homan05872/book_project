@@ -15,17 +15,15 @@ class ListBook(ListView):
     modle = Book
     queryset = Book.objects.all().select_related()
     
-    
-    
-    # def get_queryset(self):
-    #     query = self.request.GET.get('query')
+    def get_queryset(self):
+        query = self.request.GET.get('query')
 
-    #     if query:
-    #         Book_list = Book.objects.filter(
-    #             name__icontains=query)
-    #     else:
-    #         Book_list = Book.objects.all()
-    #     return Book_list
+        if query:
+            Book_list = Book.objects.filter(
+                name__icontains=query)
+        else:
+            Book_list = Book.objects.all()
+        return Book_list
 
 class DetailBook(LoginRequiredMixin, DetailView):
     model = Book
