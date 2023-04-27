@@ -62,8 +62,8 @@
                 {% endblock listnav1 %}
               </ul>
               {% block listnav2 %}
-              <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <form class="d-flex" method="get">
+                <input class="form-control me-2" type="search" name="query" value="{{ request.GET.query }}" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success me-5" type="submit">Search</button>
               </form>
               {% endblock listnav2 %}
