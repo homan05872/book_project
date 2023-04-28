@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Book 詳細{% endblock title %}
 
 {% block content %}
@@ -11,6 +11,11 @@
 <h1>Book 詳細</h1>
 
 <h3>{{ object.title }}</h3>
+{% if object.thumbnail %}
+<img src="{{ object.thumbnail.url }}" class="img-thumbnail"><br>
+{% else %}
+<img src= "{% static '/image/default-image.png' %}">
+{% endif %}
 <p>{{ object.text }}</p>
 
 カテゴリ:{{ object.category }}
