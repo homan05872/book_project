@@ -17,16 +17,17 @@ class Book(models.Model):
     def __str__(self):
          return self.title
 
-#レビュー作成予定
-# class Review(models.Model):
-#     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-#     title = models.CharField(max_length=100)
-#     text = models.TextField()
-#     rate = models.IntegerField(choices=RATE_CHOICES)
-#     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+class Review(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    rate = models.IntegerField(choices=RATE_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     
-#     def __str__(self):
-#         return self.title
+    def __str__(self):
+        return self.title
     
      
 
