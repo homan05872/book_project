@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView,TemplateView
 from .models import Book, Review
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 
 
@@ -34,12 +35,22 @@ class CreateBook(LoginRequiredMixin, CreateView):
     fields = ('title', 'text', 'category')
     success_url = reverse_lazy('booklist')
     
-       
+    
 
 class UpdateBook(LoginRequiredMixin, UpdateView):
     model = Book    
     fields = ('title', 'text', 'category')
-    success_url = reverse_lazy('booklist')
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        
+        if obj.user != self.request.user:
+            raise PermissionDenied
+        
+        return obj
+    
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.object.id})
 
 
 class DeleteBook(LoginRequiredMixin, DeleteView):

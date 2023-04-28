@@ -9,10 +9,13 @@ CATEGORY = (('bussines','ビジネス'),('life','生活'),('novel','小説'),('c
 class Book(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
+    thumbnail = models.ImageField(blank=True,null=True)
     category = models.CharField(
         max_length=100,
         choices=CATEGORY
     )
+    
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     
     def __str__(self):
          return self.title
