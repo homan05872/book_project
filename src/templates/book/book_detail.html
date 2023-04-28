@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}レビュー詳細{% endblock title %}
+{% block title %}Book 詳細{% endblock title %}
 
 {% block content %}
 {% block listnav1 %}{% endblock listnav1 %}
@@ -8,13 +8,14 @@
 {% block listnav2 %}{% endblock listnav2 %}
 
 <div class="container">
-<h1>レビュー詳細</h1>
+<h1>Book 詳細</h1>
 
 <h3>{{ object.title }}</h3>
 <p>{{ object.text }}</p>
 
 カテゴリ:{{ object.category }}
 <br>
+<a href="{% url 'review' object.pk %}">レビューする</a>
 <a href="{% url 'update' object.pk %}">編集する</a>
 <a href="{% url 'delete' object.pk %}">削除する</a>
 </div>

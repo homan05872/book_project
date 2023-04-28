@@ -1,8 +1,8 @@
+from typing import Any, Dict
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView,TemplateView
-from .models import Book
-from django.contrib.auth import logout
+from .models import Book, Review
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -33,7 +33,8 @@ class CreateBook(LoginRequiredMixin, CreateView):
     model = Book
     fields = ('title', 'text', 'category')
     success_url = reverse_lazy('booklist')
-
+    
+       
 
 class UpdateBook(LoginRequiredMixin, UpdateView):
     model = Book    
@@ -45,7 +46,19 @@ class DeleteBook(LoginRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('booklist')
 
+class CreateReview(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = ('book', 'title', 'text', 'rate')
+    template_name = 'book/review_form.html'
 
-def logout_view(request):
-    logout(request)
-    return redirect('index')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['book'] = Book.objects.get(pk=self.kwargs['book_id'])
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.object.book.id})
