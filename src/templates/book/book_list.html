@@ -21,15 +21,17 @@
         <th scope="col">タイトル</th>
         <th scope="col">コメント</th>
         <th scope="col">カテゴリ</th>
+        <th scope="col">ユーザー</th>
       </tr>
     </thead>
     <tbody>
-        {% for book in object_list %}
+        {% for book in books %}
       <tr>
         <th scope="row">{{book.pk}}</th>
         <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.title}}</a></td>
         <td>{{book.text}}</td>
         <td>{{book.category}}</td>
+        <td>{{book.created_at.profiels.nickname}}</td>
       </tr>
       {% endfor %}
     </tbody>

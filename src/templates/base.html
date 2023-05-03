@@ -44,7 +44,7 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'create' %}">レビューする</a>
                 </li>
-                {% block listnav1 %}
+            
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Dropdown
@@ -59,14 +59,14 @@
                 <li class="nav-item">
                   <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
-                {% endblock listnav1 %}
+                
               </ul>
-              {% block listnav2 %}
+              
               <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success me-5" type="submit">Search</button>
               </form>
-              {% endblock listnav2 %}
+              
               <div class="navbar-nav">
               {% if request.user.is_authenticated %}
                 <a href="{% url 'accounts:logout' %}" class="nav-link">ログアウト</a>
