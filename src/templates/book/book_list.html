@@ -18,8 +18,8 @@
     <thead>
       <tr>
         <th scope="col">#</th>
+        <th scope="col">Book名</th>
         <th scope="col">タイトル</th>
-        <th scope="col">コメント</th>
         <th scope="col">カテゴリ</th>
         <th scope="col">ユーザー</th>
       </tr>
@@ -28,10 +28,10 @@
         {% for book in books %}
       <tr>
         <th scope="row">{{book.pk}}</th>
-        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.title}}</a></td>
-        <td>{{book.text}}</td>
+        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a></td>
+        <td>{{book.subtitle}}</td>
         <td>{{book.category}}</td>
-        <td>{{book.created_at.profiels.nickname}}</td>
+        <td>{{book.created_by.profiels.nickname}}</td>
       </tr>
       {% endfor %}
     </tbody>

@@ -4,11 +4,13 @@
 
 {% block content %}
 
+{% block listnav1 %}{% endblock listnav1 %}
+
 <div class="container">
 
 <h1 class='my-5'>紹介したい本のレビューを記載してください。</h1>
 
-<form method='POST'>
+<form method='POST' enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value='作成する'>

@@ -1,12 +1,13 @@
-
-from typing import Any, Dict
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Book, Review
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
-# from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from .forms import BookForm
 
 
 
@@ -28,20 +29,47 @@ def detailBook(request, pk):
 
     return render(request, 'book/book_detail.html', {'object': object})
 
+@login_required
+def createBook(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST,request.FILES)
+        
+        if form.is_valid:
+            book = form.save(commit=False)
+            book.created_by = request.user
+            book.save()
+            return redirect('detail', pk=book.pk )
+    else:
+        form = BookForm()
+            
+    return render(request,'book/book_form.html',{'form':form})
 
-class CreateBook(CreateView):
-    template_name = ('book/book_form.html')
-    model = Book
-    fields = ('title', 'text', 'category')
-    success_url = reverse_lazy('booklist')
-  
+@login_required
+def updateBook(request,pk):
+    book = get_object_or_404(Book,pk=pk)
+    
+    if book.created_by.pk != request.user.pk:
+        return HttpResponseForbidden("このBookの編集は許可されていません。")
+    
+    if request.method == 'POST':
+        form = BookForm(request.POST,request.FILES ,instance=book)
+        if form.is_valid():
+            book = form.save(commit=False)
+            book.created_by = request.user
+            book.save()
+            return redirect('detail', pk=book.pk)
+    
+    else:
+        form = BookForm(instance=book)    
+    return render(request,'book/book_update.html',{'form': form})
 
 class UpdateBook(UpdateView):
     model = Book
-    fields = ('title', 'text', 'category')
+    fields = ('bookname', 'subtitle', 'text', 'thumbnail', 'category')
     
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
+        
         
         if obj.user != self.request.user:
             raise PermissionDenied
@@ -52,7 +80,7 @@ class UpdateBook(UpdateView):
         return reverse('detail', kwargs={'pk': self.object.id})
 
 
-class DeleteBook(DeleteView):
+class DeleteBook(LoginRequiredMixin,DeleteView):
     model = Book
     success_url = reverse_lazy('booklist')
 
@@ -88,3 +116,9 @@ class DetailBook(DetailView):
 
     def get_success_url(self):
         return reverse('detail', kwargs={'pk': self.object.book.id})
+
+class CreateBook(CreateView):
+    template_name = ('book/book_form.html')
+    model = Book
+    fields = ('title', 'text', 'category')
+    success_url = reverse_lazy('booklist')
