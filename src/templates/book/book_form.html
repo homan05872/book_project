@@ -7,8 +7,9 @@
 <div class="container">
 
 <h1 class='my-5'>紹介したい本のレビューを記載してください。</h1>
-{% csrf_token %}
-<form mthod='POST'>
+
+<form method='POST'>
+    {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value='作成する'>
 </form>

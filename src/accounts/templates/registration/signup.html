@@ -3,19 +3,35 @@
 {% block title %}アカウント作成{% endblock title %}
 
 {% block content %}
-<div class="container">
-<h1>アカウント作成</h1>
+{% block listnav1 %}{% endblock listnav1 %}
 
+{% block listnav2 %}{% endblock listnav2 %}
+<div class="container">
+<h1 class="mt-5">アカウント作成</h1>
+
+<div class="card-body">
+<div class="item-f">
 <form method='post'>
     {% csrf_token %}
-    <input type="text" name='username' placeholder="ユーザーID">
-    <input type="password" name='password1' placeholder="パスワード">
-    <input type="password" name='password2' placeholder="パスワード確認用">
-    <small>パスワードは8文字以上で設定してください。</small>
+    <label class="my-3">
+        ユーザーID
+    </label>
+    <input type="text" name='username' class="form-control ms-3" placeholder="ユーザーID" style="width: 50%;">
+    <label class="my-3">
+        パスワード
+    </label>
+    <input type="password" name='password1' class="form-control ms-3" placeholder="パスワード" style="width: 50%;">
+    <label class="my-3">
+        パスワード確認用
+    </label>
+    <input type="password" name='password2' class="form-control ms-3" placeholder="パスワード確認用" style="width: 50%;">
+    <small class="m-3">※パスワードは8文字以上で設定してください。</small><br>
     {% if form.errors %}
-    <span style='color: red;'>利用できないユーザーIDやパスワードの可能性があります。入力内容を再度ご確認ください。</span>
+    <span style='color: red;'>利用できないユーザーIDやパスワードの可能性があります。入力内容を再度ご確認ください。</span><br>
     {% endif %}
-    <button type='submit'>アカウント作成</button>
+    <button type='submit' class="btn btn-outline-success m-3">アカウント作成</button>
 </form>
+</div>
+</div>
 </div>
 {% endblock content %}

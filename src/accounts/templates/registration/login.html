@@ -1,18 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% block listnav1 %}{% endblock listnav1 %}
+
+{% block listnav2 %}{% endblock listnav2 %}
 <div class="container">
-    <h1>ログイン</h1>
-    <form method='POST'>
-        {% csrf_token %}
-        {% for error in form.errors.values %}
-            {{error}}
-        {% endfor %}
-            <label>ユーザーID</label>
-            <input name="username">
-            <label>パスワード</label>
-            <input type="password" name="password">
-            <button type="submit">ログインする</button>
-    </form>
+    <h1 class="my-5">ログイン</h1>
+    <div class="card-body">
+        <form method='POST'>
+            {% csrf_token %}
+            {% for error in form.errors.values %}
+                {{error}}
+            {% endfor %}
+            <label class="mb-2">
+                ユーザーID
+            </label>
+            <input class="form-control m-3" name="username" style="width: 50%;">
+            <label class="my-2">
+                パスワード
+            </label>
+            <input type="password" class="form-control m-3" name="password" style="width: 50%;">
+            <button type="submit" class="btn btn-outline-success m-3">ログインする</button>
+        </form>
+      </div>
 </div>
 {% endblock content %}
