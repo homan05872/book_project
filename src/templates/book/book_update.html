@@ -4,11 +4,15 @@
 
 {% block content %}
 
+
+<form mthod='POST'>
+
 {% block listnav1 %}{% endblock listnav1 %}
 
 {% block listnav2 %}{% endblock listnav2 %}
 
 <form method='POST'>
+
     {{form.as_p}}
     <input type="submit" value='修正する'>
 </form>
