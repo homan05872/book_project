@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 
 from django.views.generic import CreateView
@@ -13,7 +13,7 @@ class SignupView(CreateView):
     model = User
     form_class = SignupForm
     template_name = 'registration/signup.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('profiel_new')
     
 
 def profiel_new(request):
@@ -27,4 +27,12 @@ def profiel_new(request):
     else:
         form = Profielform()
     return render(request,'profiel/profiel_new.html',{'form':form})
+
+
+def profiel_detail(request):
+    return render(request, 'profiel/profiel_detail.html')
+
+def profiel_edit(request):
+    profiel = get_object_or_404(Profiel,)
+    return render(request, 'profiel/profiel_edit.html')
 

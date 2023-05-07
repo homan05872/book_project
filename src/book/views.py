@@ -7,7 +7,7 @@ from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .forms import BookForm
+from .forms import BookForm, ReviewForm
 
 
 
@@ -27,7 +27,17 @@ def listBook(request):
 def detailBook(request, pk):
     object = get_object_or_404(Book, pk=pk)
 
-    return render(request, 'book/book_detail.html', {'object': object})
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.created_by = request.user
+            review.book = object
+            review.save()
+            redirect('detail', pk=object.pk)
+    else:
+        form = ReviewForm()
+    return render(request, 'book/book_detail.html', {'object': object,'form':form})
 
 @login_required
 def createBook(request):
@@ -84,6 +94,8 @@ class DeleteBook(LoginRequiredMixin,DeleteView):
     model = Book
     success_url = reverse_lazy('booklist')
 
+
+
 class CreateReview(LoginRequiredMixin, CreateView):
     model = Review
     fields = ('book', 'title', 'text', 'rate')
@@ -102,6 +114,9 @@ class CreateReview(LoginRequiredMixin, CreateView):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+
+
 
 
 # 未使用
