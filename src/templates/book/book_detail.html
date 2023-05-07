@@ -27,7 +27,31 @@
 <a href="{% url 'delete' object.pk %}">削除する</a>
 {% endif %}
 <hr>
+<h2 class='subtitle'>コメント</h2>
+<hr>
+
+<!--投稿一覧-->
+
+{% for review in object.reviews.all %}
+<h3>{{review.title}}</h3>
+<p>{{review.text}}</p>
+<p>評価：{{review.rate}}</p>
+<small>{{review.timestamp}}</small>
+<hr>
+{% endfor %}
+
+<!--投稿フォーム-->
+<h2 class='subtitle'>コメントを投稿する</h2>
+<form method='POST'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value='作成する'>
+</form>
+
 </div>
+
+
+
 
 
 {% endblock content %}

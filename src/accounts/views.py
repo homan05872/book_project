@@ -29,7 +29,8 @@ def profiel_new(request):
     return render(request,'profiel/profiel_new.html',{'form':form})
 
 
-def profiel_detail(request):
+def profiel_detail(request,):
+    # book = get_object_or_404(Profiel, pk=pk)
     return render(request, 'profiel/profiel_detail.html')
 
 def profiel_edit(request):
