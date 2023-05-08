@@ -4,11 +4,21 @@
 
 {% block title %}TOP{% endblock title %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock head %}
+
 {% block content %}
 
     <div class="container">
-    
-       <h1>TOP ページ</h1>
+      <h1>{{request.user.profiels.pk}}</h1>
+       <div class="welcome">
+        <h2 class="subtitle">ようこそBookアプリへ</h2>
+        <p type="subtitle">あなたのBookを共有しましょう</p>
+        <p>Bookを共有するにはあなたが公開するプロフィール設定を行う必要があります。</p>
+        <a class="btn btn-primary m-1" href="{% url 'accounts:profiel_edit' request.user.profiels.pk %}">プロフィール編集</a>
+        <a class="btn btn-primary m-1" href="{% url 'accounts:profiel_detail' request.user.profiels.pk %}">プロフィール詳細</a>
+    </div>
        <img src="{% static '/image/welcome.jpg' %}" >
 
   </div>

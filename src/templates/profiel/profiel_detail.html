@@ -6,6 +6,19 @@
 
 {% block content %}
 <div class="container">
-    <h1>プロフィール詳細画面</h1>
+    
+    <div class="card">
+        <h5 class="card-header">プロフィール詳細画面</h5>
+        <div class="card-body">
+            <p>名前:{{profiel.nickname}}</p>
+            <p>性別:{{profiel.sex}}</p>
+            <label>自己紹介：</label>
+            <p class='card-text'>{{profiel.text}}</p>
+        </div>
+    </div>
 </div>
+
+{% for book in profiel.profiels.bookuser.all %}
+{{book.bookname}}
+{% endfor %}
 {% endblock content %}
