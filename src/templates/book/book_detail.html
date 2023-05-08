@@ -18,7 +18,8 @@
 <img src= "{% static '/image/default-image.png' %}">
 {% endif %}
 <p>{{ object.text }}</p>
-
+ユーザー名：{{object.created_by.profiels.nickname}}
+<br>
 カテゴリ:{{ object.category }}
 <br>
 <a href="{% url 'review' object.pk %}">レビューする</a>

@@ -8,7 +8,7 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ('username',) 
         
-class Profielform(forms.ModelForm):
+class ProfielUpdateForm(forms.ModelForm):
     class Meta:
         model = Profiel
         fields = ('nickname','text','sex')

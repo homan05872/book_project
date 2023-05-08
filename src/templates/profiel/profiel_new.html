@@ -5,13 +5,23 @@
 {% endblock title %}
 
 {% block content %}
+
+
+{% if request.user.profiels %}
+<h1>プロフィール属性あり</h1>
+{% endif %}
+
+{{request.user.profiels.nickname}}
+
 <div class="container">
 <h1>プロフィール作成画面</h1>
 <p>公開するニックネームや自己紹介を決めてください。</p>
-<form method=='POST'>
+
+<form method='POST'>
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value='作成する'>
 </form>
 </div>
+
 {% endblock content %}
