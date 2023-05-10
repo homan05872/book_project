@@ -1,4 +1,5 @@
-from django.conf import settings
+import debug_toolbar 
+from django.conf import settings 
 from django.conf.urls.static import static
 
 from django.contrib import admin
@@ -7,7 +8,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('',include('book.urls'))
+    path('',include('book.urls')),
+    path('__ debug __ /', include(debug_toolbar.urls))
 ]
 
 

@@ -18,8 +18,9 @@ class IndexBook(TemplateView):
 
 
 def listBook(request):
-    books = Book.objects.all()
-
+    #まだprofielまでjoinできてない
+    books = Book.objects.select_related('created_by').all()
+    
     return render(request, "book/book_list.html", {"books": books})
 
 

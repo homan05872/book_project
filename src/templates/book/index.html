@@ -16,8 +16,10 @@
         <h2 class="subtitle">ようこそBookアプリへ</h2>
         <p type="subtitle">あなたのBookを共有しましょう</p>
         <p>Bookを共有するにはあなたが公開するプロフィール設定を行う必要があります。</p>
+        {% if request.user.is_authenticated %}
         <a class="btn btn-primary m-1" href="{% url 'accounts:profiel_edit' request.user.profiels.pk %}">プロフィール編集</a>
         <a class="btn btn-primary m-1" href="{% url 'accounts:profiel_detail' request.user.profiels.pk %}">プロフィール詳細</a>
+        {% endif %}
     </div>
        <img src="{% static '/image/welcome.jpg' %}" >
 
