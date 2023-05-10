@@ -8,6 +8,8 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm, ReviewForm
+from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 
@@ -18,26 +20,38 @@ class IndexBook(TemplateView):
 
 
 def listBook(request):
-    books = Book.objects.all()
-
+    #Bookとプロフィールjoin
+    books = Book.objects.select_related('created_by__profiels').all()
+    
     return render(request, "book/book_list.html", {"books": books})
 
 
-
+@login_required
 def detailBook(request, pk):
-    object = get_object_or_404(Book, pk=pk)
+    book = get_object_or_404(Book, pk=pk)
+    reviews = Review.objects.filter(book=book.pk)
+    form = ReviewForm()
+    
+    return render(request, 'book/book_detail.html', 
+                  {'book': book,"reviews":reviews,'form':form})
 
+@login_required
+def new_review(request,pk):
+    book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.created_by = request.user
-            review.book = object
+            review.book = book
             review.save()
-            redirect('detail', pk=object.pk)
     else:
-        form = ReviewForm()
-    return render(request, 'book/book_detail.html', {'object': object,'form':form})
+        messages.add_message(request,messages.ERROR,'コメント投稿に失敗しました。')
+    
+    return redirect('detail', pk=book.pk)
+        
+        
+        
 
 @login_required
 def createBook(request):
