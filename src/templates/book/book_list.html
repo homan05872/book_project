@@ -22,16 +22,22 @@
         <th scope="col">タイトル</th>
         <th scope="col">カテゴリ</th>
         <th scope="col">ユーザー</th>
+        <th scope="col">性別</th>
       </tr>
     </thead>
     <tbody>
         {% for book in books %}
       <tr>
         <th scope="row">{{book.pk}}</th>
-        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a></td>
+        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a>
         <td>{{book.subtitle}}</td>
         <td>{{book.category}}</td>
-        <td>{{book.created_by.profiels.nickname}}</td>
+        <td><a class='indexlink' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">{{book.created_by.profiels.nickname}}</a></td>
+        {% if book.created_by.profiels.sex %}
+        <td>{{book.created_by.profiels.sex}}</td>
+        {% else %}
+        <td>未公開</td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

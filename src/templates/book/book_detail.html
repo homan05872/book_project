@@ -10,22 +10,22 @@
 <div class="container">
 <h1>Book 詳細</h1>
 
-<h3>Book名：{{ object.bookname }}</h3>
-<h4>タイトル：{{object.subtitle}}</h4>
-{% if object.thumbnail %}
-<img src="{{ object.thumbnail.url }}" class="img-thumbnail"><br>
+<h3>Book名：{{ book.bookname }}</h3>
+<h4>タイトル：{{book.subtitle}}</h4>
+{% if book.thumbnail %}
+<img src="{{ book.thumbnail.url }}" class="img-thumbnail"><br>
 {% else %}
 <img src= "{% static '/image/default-image.png' %}">
 {% endif %}
-<p>{{ object.text }}</p>
-ユーザー名：{{object.created_by.profiels.nickname}}
+<p>{{ book.text }}</p>
+ユーザー名：{{book.created_by.profiels.nickname}}
 <br>
-カテゴリ:{{ object.category }}
+カテゴリ:{{ book.category }}
 <br>
-<a href="{% url 'review' object.pk %}">レビューする</a>
-{% if request.user == object.created_by %}
-<a href="{% url 'update' object.pk %}">編集する</a>
-<a href="{% url 'delete' object.pk %}">削除する</a>
+<a href="{% url 'review' book.pk %}">レビューする</a>
+{% if request.user == book.created_by %}
+<a href="{% url 'update' book.pk %}">編集する</a>
+<a href="{% url 'delete' book.pk %}">削除する</a>
 {% endif %}
 <hr>
 <h2 class='subtitle'>コメント</h2>
@@ -33,7 +33,7 @@
 
 <!--投稿一覧-->
 
-{% for review in object.reviews.all %}
+{% for review in reviews %}
 <h3>{{review.title}}</h3>
 <p>{{review.text}}</p>
 <p>評価：{{review.rate}}</p>
@@ -43,7 +43,7 @@
 
 <!--投稿フォーム-->
 <h2 class='subtitle'>コメントを投稿する</h2>
-<form method='POST'>
+<form method='POST' action="{% url 'new_comment' book.pk %}">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value='作成する'>

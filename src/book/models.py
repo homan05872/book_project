@@ -11,42 +11,52 @@ CATEGORY = (('bussines','ビジネス'),('life','生活'),('novel','小説'),('c
 
 
 class Book(models.Model):
-    bookname = models.CharField(max_length=100)
-    subtitle = models.CharField(max_length=100)
-    text = models.TextField()
+    bookname = models.CharField('書籍名',max_length=100)
+    subtitle = models.CharField('タイトル',max_length=100)
+    text = models.TextField('本文',blank=False)
     category = models.name = models.CharField(
+        'ジャンル',
         max_length=100,
         choices=CATEGORY
     )
-    timestamp = models.DateTimeField(auto_now_add=True)
-    thumbnail = models.ImageField(blank=True,null=True)
-    created_by = models.ForeignKey(User,related_name='bookuser', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField('投稿日',auto_now_add=True)
+    thumbnail = models.ImageField('Bookカバー',blank=True,null=True)
+    created_by = models.ForeignKey(User,related_name='bookuser',verbose_name='投稿者', on_delete=models.CASCADE)
     
     def __str__(self):
          return self.bookname
+     
+    class Meta:
+         db_table = 'books'
 
 
 class Review(models.Model):
-    book = models.ForeignKey(Book,related_name='reviews', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    text = models.TextField()
-    rate = models.IntegerField(choices=RATE_CHOICES)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User,related_name='reviewuser', on_delete=models.CASCADE)
+    book = models.ForeignKey(Book,related_name='reviews',verbose_name='本', on_delete=models.CASCADE)
+    text = models.TextField('本文')
+    rate = models.IntegerField('評価',choices=RATE_CHOICES)
+    timestamp = models.DateTimeField('投稿日',auto_now_add=True)
+    created_by = models.ForeignKey(User,related_name='reviewuser', verbose_name='投稿者', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.title
+    
+    class Meta:
+         db_table = 'reviews'
 
 
 class Profiel(models.Model):
-    outher = models.OneToOneField(User,related_name='profiels', on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=100)
-    text = models.TextField()
-    sex = models.CharField(choices=(('男性','男性'),('女性','女性')),
+    outher = models.OneToOneField(User,related_name='profiels',verbose_name='ユーザー', on_delete=models.CASCADE)
+    nickname = models.CharField('ニックネーム',max_length=100)
+    text = models.TextField('自己紹介')
+    sex = models.CharField('性別',choices=(('男性','男性'),('女性','女性')),
                            max_length=50)
     
+    class Meta:
+         db_table = 'profiels'
 
 
+#OneToOneでUserモデルと紐づけるため
+#この関数はユーザーモデルが作成された際に、Profielモデルが自動生成されるようになっている。
 def post_user_created(sender, instance, created, **kwargs):
     if created:
         profile_obj = Profiel(outher=instance) #instance = 作成されたUserモデルクラスのオブジェクトの事

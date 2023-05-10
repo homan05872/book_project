@@ -11,4 +11,4 @@ class BookForm(ModelForm):
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ("title", "text", "rate")
+        fields = ("text", "rate")
