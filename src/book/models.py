@@ -9,6 +9,16 @@ RATE_CHOICES = [(x, str(x)) for x in range(0, MAX_RATE + 1)]
 
 CATEGORY = (('bussines','ビジネス'),('life','生活'),('novel','小説'),('comic','マンガ'),('other','その他'),)
 
+class Profiel(models.Model):
+    outher = models.OneToOneField(User,related_name='profiels',verbose_name='ユーザー', on_delete=models.CASCADE)
+    nickname = models.CharField('ニックネーム',max_length=100)
+    text = models.TextField('自己紹介')
+    sex = models.CharField('性別',choices=(('男性','男性'),('女性','女性')),
+                           max_length=50)
+    
+    class Meta:
+         db_table = 'profiels'
+
 
 class Book(models.Model):
     bookname = models.CharField('書籍名',max_length=100)
@@ -22,6 +32,7 @@ class Book(models.Model):
     timestamp = models.DateTimeField('投稿日',auto_now_add=True)
     thumbnail = models.ImageField('Bookカバー',blank=True,null=True)
     created_by = models.ForeignKey(User,related_name='bookuser',verbose_name='投稿者', on_delete=models.CASCADE)
+    #profiel_connect = models.ForeignKey(Profiel,related_name='profiel_connect',verbose_name='投稿者',on_delete=models.CASCADE)
     
     def __str__(self):
          return self.bookname
@@ -38,21 +49,13 @@ class Review(models.Model):
     created_by = models.ForeignKey(User,related_name='reviewuser', verbose_name='投稿者', on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.title
+        return str(f'{self.pk} {self.book.bookname}へのコメント')
     
     class Meta:
          db_table = 'reviews'
 
 
-class Profiel(models.Model):
-    outher = models.OneToOneField(User,related_name='profiels',verbose_name='ユーザー', on_delete=models.CASCADE)
-    nickname = models.CharField('ニックネーム',max_length=100)
-    text = models.TextField('自己紹介')
-    sex = models.CharField('性別',choices=(('男性','男性'),('女性','女性')),
-                           max_length=50)
-    
-    class Meta:
-         db_table = 'profiels'
+
 
 
 #OneToOneでUserモデルと紐づけるため

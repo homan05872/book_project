@@ -29,7 +29,7 @@ def listBook(request):
 @login_required
 def detailBook(request, pk):
     book = get_object_or_404(Book, pk=pk)
-    reviews = Review.objects.filter(book=book.pk)
+    reviews = Review.objects.filter(book=book.id)
     form = ReviewForm()
     
     return render(request, 'book/book_detail.html', 
