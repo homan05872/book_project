@@ -13,6 +13,17 @@
 
 <div class="container">
     
+  {% comment %} <span>書籍名検索</span>
+  {% if form %}<!-- searchFormがあれば -->
+  <form method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+    <div>
+      {{ form }}<!-- views.pyから受け取ったsearchFormを表示 -->
+      <input type="submit" value="検索">
+      <a href='{% url "index" %}'>クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+    </div>
+  </form>
+{% endif %} {% endcomment %}
+
 <table class="table">
     <div class='row'>
     <thead>

@@ -2,7 +2,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .models import Book, Review, Profiel
+from .models import Book, Review
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +20,14 @@ class IndexBook(TemplateView):
 
 
 def listBook(request):
+    # books = Book.objects.select_related('created_by__profiels').all()
+    # form = SearchForm(request.GET)
+    
+    # if form.is_valid:
+    #     keyword = form.cleaned_data.get('bookname')
+    #     books = Book.objects.filter(bookname=keyword).select_related('created_by__profiels').all()
+    
+    # else:
     #Bookとプロフィールjoin
     books = Book.objects.select_related('created_by__profiels').all()
     
