@@ -24,7 +24,7 @@ class Book(models.Model):
     bookname = models.CharField('書籍名',max_length=100)
     subtitle = models.CharField('タイトル',max_length=100)
     text = models.TextField('本文',blank=False)
-    category = models.name = models.CharField(
+    category = models.CharField(
         'ジャンル',
         max_length=100,
         choices=CATEGORY
