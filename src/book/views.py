@@ -9,8 +9,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm, ReviewForm
 from django.contrib import messages
-from django.contrib.auth.models import User
-
 
 
 
