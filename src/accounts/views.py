@@ -14,7 +14,7 @@ class SignupView(CreateView):
     model = User
     form_class = SignupForm
     template_name = 'registration/signup.html'
-    success_url = reverse_lazy('profiel_new')
+    success_url = reverse_lazy('index')
     
 
 def profiel_edit(request,pk):
