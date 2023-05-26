@@ -1,4 +1,6 @@
 #あとから追記分（オリジナル）
+.vscode
+main.sock
 local.py
 auth/
 auth
