@@ -36,7 +36,10 @@ def profiel_edit(request,pk):
 
 
 def profiel_detail(request,pk):
-    profiel = get_object_or_404(Profiel, pk=pk)
-    return render(request, 'profiel/profiel_detail.html',{'profiel':profiel})
+    profiel = get_object_or_404(Profiel,pk=pk)
+    profiel_connect = Profiel.objects.filter(pk=pk).prefetch_related('profiel_connect')
+    mybooks = profiel_connect[0].profiel_connect.all()
+    
+    return render(request, 'profiel/profiel_detail.html',{'profiel':profiel,'mybooks':mybooks})
 
 

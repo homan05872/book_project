@@ -16,7 +16,13 @@
             <p class='card-text'>{{profiel.text}}</p>
         </div>
     </div>
+
+<h1>MyBook一覧</h1>
+
+{% for mybook in mybooks %}
+<ul>
+<li><a class='indexlink' href="{% url 'detail' mybook.pk %}">{{mybook.bookname}}</a></li>
+</ul>
+{% endfor %}
 </div>
-
-
 {% endblock content %}

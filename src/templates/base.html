@@ -28,12 +28,13 @@
 
         <!--nav.html タグ継承 現在はincludeしてない-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
+          <div class="container-fluid d-flex">
             <a class="navbar-brand" href="#">Bookアプリ</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Topページ</a>
@@ -44,17 +45,26 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'create' %}">Book作成</a>
                 </li>
+                {% block nav %}{% endblock nav %}
                 
-
-              <div class="navbar-nav">
-              {% if request.user.is_authenticated %}
+              
+                
+              <div class="navbar-nav flex">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
                 <a href="{% url 'accounts:logout' %}" class="nav-link">ログアウト</a>
-              {% else %}
+                </li>
+                {% else %}
+                <li class="nav-item">
                 <a href="{% url 'accounts:login' %}" class="nav-link">ログイン</a>
-              {% endif %}
+                </li>
+                {% endif %}
+                <li class="nav-item">
                 <a href="{% url 'accounts:signup' %}" class="nav-link">会員登録</a>
+                </li>
+              </ul>
             </div>
-            
+              
             </div>
           </div>
         </nav>

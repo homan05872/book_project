@@ -2,12 +2,12 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .models import Book, Review
+from .models import Book, Review, Profiel
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .forms import BookForm, ReviewForm
+from .forms import BookForm, ReviewForm,BookNameSearch,SubtitleSearch
 from django.contrib import messages
 
 
@@ -18,18 +18,22 @@ class IndexBook(TemplateView):
 
 
 def listBook(request):
-    # books = Book.objects.select_related('created_by__profiels').all()
-    # form = SearchForm(request.GET)
+    books  = Book.objects.select_related('created_by__profiels').all()
+    bookSearchForm = BookNameSearch(request.GET)
+    subtitleSearchForm = SubtitleSearch(request.GET)
     
-    # if form.is_valid:
-    #     keyword = form.cleaned_data.get('bookname')
-    #     books = Book.objects.filter(bookname=keyword).select_related('created_by__profiels').all()
-    
-    # else:
-    #Bookとプロフィールjoin
-    books = Book.objects.select_related('created_by__profiels').all()
-    
-    return render(request, "book/book_list.html", {"books": books})
+    if bookSearchForm.is_valid():
+        bookname = bookSearchForm.cleaned_data.get("bookname")
+        
+        if bookname:
+            books = Book.objects.select_related('created_by__profiels').filter(bookname__contains=bookname).all()
+        
+    if subtitleSearchForm.is_valid():
+        subtitle = subtitleSearchForm.cleaned_data.get("subtitle")
+        if subtitle:
+            books = Book.objects.select_related('created_by__profiels').filter(subtitle__contains=subtitle).all() 
+            
+    return render(request, "book/book_list.html", {"books": books,"bookSearchForm":bookSearchForm,"subtitleSearchForm":subtitleSearchForm})
 
 
 @login_required
@@ -67,6 +71,7 @@ def createBook(request):
         if form.is_valid:
             book = form.save(commit=False)
             book.created_by = request.user
+            book.profiel_connect = Profiel.objects.get(pk = request.user.pk)
             book.save()
             return redirect('detail', pk=book.pk )
     else:

@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 RATE_CHOICES = [(x, str(x)) for x in range(0, MAX_RATE + 1)]
 
 
-CATEGORY = (('bussines','ビジネス'),('life','生活'),('novel','小説'),('comic','マンガ'),('other','その他'),)
+CATEGORY = (('ビジネス','ビジネス'),('生活','生活'),('小説','小説'),('マンガ','マンガ'),('その他','その他'),)
 
 class Profiel(models.Model):
     outher = models.OneToOneField(User,related_name='profiels',verbose_name='ユーザー', on_delete=models.CASCADE)
@@ -32,7 +32,7 @@ class Book(models.Model):
     timestamp = models.DateTimeField('投稿日',auto_now_add=True)
     thumbnail = models.ImageField('Bookカバー',blank=True,null=True)
     created_by = models.ForeignKey(User,related_name='bookuser',verbose_name='投稿者', on_delete=models.CASCADE)
-    #profiel_connect = models.ForeignKey(Profiel,related_name='profiel_connect',verbose_name='投稿者',on_delete=models.CASCADE)
+    profiel_connect = models.ForeignKey(Profiel,related_name='profiel_connect',default=1,on_delete=models.CASCADE)
     
     def __str__(self):
          return self.bookname

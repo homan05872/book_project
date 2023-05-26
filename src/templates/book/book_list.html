@@ -6,23 +6,64 @@
 {% endblock head %}
 
 {% block title %}Book 一覧{% endblock title %}
+
+{% block nav %}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    絞り込み
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+  </ul>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      並び替え
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+      <li><a class="dropdown-item" href="#"></a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+{% endblock nav %}
+
+
 {% block content %}
-  
 
 <h1 class='m-5'>Book 一覧ページ</h1>
 
 <div class="container">
     
-  {% comment %} <span>書籍名検索</span>
-  {% if form %}<!-- searchFormがあれば -->
-  <form method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+  <span>書籍名検索</span>
+  {% if bookSearchForm %}<!-- searchFormがあれば -->
+  <form action="{% url 'booklist' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
     <div>
-      {{ form }}<!-- views.pyから受け取ったsearchFormを表示 -->
+      {{ bookSearchForm }}<!-- views.pyから受け取ったsearchFormを表示 -->
       <input type="submit" value="検索">
-      <a href='{% url "index" %}'>クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+      <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
     </div>
   </form>
-{% endif %} {% endcomment %}
+{% endif %}
+
+<span>タイトル検索</span>
+{% if subtitleSearchForm %}<!-- searchFormがあれば -->
+<form action="{% url 'booklist' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+  <div>
+    {{ subtitleSearchForm }}<!-- views.pyから受け取ったsearchFormを表示 -->
+    <input type="submit" value="検索">
+    <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+  </div>
+</form>
+{% endif %}
+
+<span>絞り込み</span>
+<form action="{% url 'booklist' %}" method='GET'>
+  <select name="order_by" class="dropend">
+    <option value="price">値段安い順</option>
+    <option value="-price">値段高い順</option>
+  </select>
+  </form>
 
 <table class="table">
     <div class='row'>
