@@ -2,3 +2,12 @@ body {
     font-family: 'Kaisei Opti', serif;
 
 }
+
+nav .navbar{
+    display: block;
+    padding-top: 40px;
+}
+
+ul .nav-item a:hover{
+    color: #fff;
+}
