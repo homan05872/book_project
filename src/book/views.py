@@ -18,7 +18,7 @@ class IndexBook(TemplateView):
 
 
 def listBook(request):
-    books  = Book.objects.select_related('created_by__profiels').all()
+    books  = Book.objects.select_related('created_by__profiels').all().order_by('-timestamp')
     bookSearchForm = BookNameSearch(request.GET)
     subtitleSearchForm = SubtitleSearch(request.GET)
     
@@ -26,12 +26,12 @@ def listBook(request):
         bookname = bookSearchForm.cleaned_data.get("bookname")
         
         if bookname:
-            books = Book.objects.select_related('created_by__profiels').filter(bookname__contains=bookname).all()
+            books = Book.objects.select_related('created_by__profiels').filter(bookname__contains=bookname).all().order_by('-timestamp')
         
     if subtitleSearchForm.is_valid():
         subtitle = subtitleSearchForm.cleaned_data.get("subtitle")
         if subtitle:
-            books = Book.objects.select_related('created_by__profiels').filter(subtitle__contains=subtitle).all() 
+            books = Book.objects.select_related('created_by__profiels').filter(subtitle__contains=subtitle).all().order_by('-timestamp')
             
     return render(request, "book/book_list.html", {"books": books,"bookSearchForm":bookSearchForm,"subtitleSearchForm":subtitleSearchForm})
 
@@ -39,7 +39,7 @@ def listBook(request):
 @login_required
 def detailBook(request, pk):
     book = get_object_or_404(Book, pk=pk)
-    reviews = Review.objects.filter(book=book.id).select_related('created_by__profiels').all()
+    reviews = Review.objects.filter(book=book.id).select_related('created_by__profiels').all().order_by("-timestamp")
     form = ReviewForm()
     
     return render(request, 'book/book_detail.html', 

@@ -8,7 +8,7 @@
 <div class="container">
 
 <h1 class='my-5' style="text-align: center;">紹介したい本のレビューを記載してください。</h1>
-<div class="card">
+
 <form method='POST' enctype="multipart/form-data">
     <div class="row mt-5">
         {% csrf_token %}
@@ -44,8 +44,6 @@
         <label>サムネイル</label>
         {{ form.thumbnail|add_class:"form-control mb-3"}}
         </div>
-        <div class="col-lg-5"></div>
-        <div class="col-lg-2"></div>
         <div class="col-lg-3">
         <label>カテゴリ</label>
         {{ form.category|add_class:"form-control mb-3"}}
@@ -53,9 +51,13 @@
         
         <div class="d-flex justify-content-center mt-5 mb-5">
         <input class="btn btn-primary mt-5 ps-2 pe-2" type="submit" value='作成する' style="width:45%;">
+    
+    
         </div>
+
+        
     </div>
    </form>
-</div>
+
 </div>
 {% endblock content %}

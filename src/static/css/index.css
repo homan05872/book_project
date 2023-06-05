@@ -1,3 +1,22 @@
+:root{
+    --primary: #0d6efd;
+    --dark: #21252f;
+    --body: #888;
+}
+
+a {
+    color: var(--dark);
+    text-decoration: none;
+  }
+
+div#home{
+    background-image: url(../../static/image/welcome.jpg) !important;
+    background-position: center;
+    background-size: cover;
+    z-index: 1;
+}
+
+
 .welcome{
     padding: 3rem 0;
     margin: 2rem;

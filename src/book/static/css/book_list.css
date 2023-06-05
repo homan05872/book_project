@@ -8,3 +8,8 @@ a.indexlink{
     color:#B66655;
     border-bottom:2px solid #B66655;
 }
+
+.search-form{
+    width: 70%;
+    display: inline;
+}

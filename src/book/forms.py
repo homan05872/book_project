@@ -6,12 +6,18 @@ class BookForm(forms.ModelForm):
     class Meta:    
         model = Book
         fields = ('bookname', 'subtitle', 'text','thumbnail', 'category')
+        
+        
 
 
 class ReviewForm(forms.ModelForm):
+    
     class Meta:
         model = Review
         fields = ("text", "rate")
+       
+    
+        
         
 class BookNameSearch(forms.ModelForm):
     bookname = forms.CharField(label='', max_length=50,required=False)

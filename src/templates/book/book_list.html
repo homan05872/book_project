@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/book_list.css' %}">
@@ -8,7 +9,7 @@
 {% block title %}Book 一覧{% endblock title %}
 
 {% block nav %}
-<li class="nav-item dropdown">
+{% comment %} <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     絞り込み
   </a>
@@ -25,7 +26,7 @@
       <li><a class="dropdown-item" href="#"></a></li>
       <li><a class="dropdown-item" href="#">Another action</a></li>
       <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
+    </ul> {% endcomment %}
 {% endblock nav %}
 
 
@@ -34,43 +35,57 @@
 <h1 class='m-5'>Book 一覧ページ</h1>
 
 <div class="container">
+  <!--検索フォーム-->
+  <div class="row d-flex justify-content-end">
+    <div class="col-lg-5 mb-5">
+      
+    {% if bookSearchForm %}<!-- searchFormがあれば -->
+      <span>書籍名検索</span>
+      <form action="{% url 'booklist' %}" class="form-inline" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+        <div class="form-group mr-3">
+          {{ bookSearchForm.bookname |add_class:"form-control search-form" }}<!-- views.pyから受け取ったsearchFormを表示 -->
+          <input type="submit" class="btn btn-primary mb-2" value="検索">
+          <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+        </div>
+      </form>
+    {% endif %}
     
-  <span>書籍名検索</span>
-  {% if bookSearchForm %}<!-- searchFormがあれば -->
-  <form action="{% url 'booklist' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
-    <div>
-      {{ bookSearchForm }}<!-- views.pyから受け取ったsearchFormを表示 -->
-      <input type="submit" value="検索">
-      <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+
+
+    
+    {% if subtitleSearchForm %}<!-- searchFormがあれば -->
+      <span>タイトル検索</span>
+      <form action="{% url 'booklist' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
+          {{ subtitleSearchForm.subtitle |add_class:"form-control search-form"}}<!-- views.pyから受け取ったsearchFormを表示 -->
+          <input type="submit" class="btn btn-primary mb-2" value="検索">
+          <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
+      </form> 
+    {% endif %}
+  
+
+    
+      {% comment %} <span>絞り込み</span>
+      <form action="{% url 'booklist' %}" method='GET'>
+        <select name="order_by" class="dropend">
+          <option value="price">値段安い順</option>
+          <option value="-price">値段高い順</option>
+        </select>
+        </form> {% endcomment %}
+
+      
+      </div>
     </div>
-  </form>
-{% endif %}
-
-<span>タイトル検索</span>
-{% if subtitleSearchForm %}<!-- searchFormがあれば -->
-<form action="{% url 'booklist' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
-  <div>
-    {{ subtitleSearchForm }}<!-- views.pyから受け取ったsearchFormを表示 -->
-    <input type="submit" value="検索">
-    <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
   </div>
-</form>
-{% endif %}
 
-<span>絞り込み</span>
-<form action="{% url 'booklist' %}" method='GET'>
-  <select name="order_by" class="dropend">
-    <option value="price">値段安い順</option>
-    <option value="-price">値段高い順</option>
-  </select>
-  </form>
 
+<!--Book一覧-->
+<div class="container">
+<div class="row">
 <table class="table">
-    <div class='row'>
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Book名</th>
+        <th scope="row">#</th>
+        <th scope="col">書籍名</th>
         <th scope="col">タイトル</th>
         <th scope="col">カテゴリ</th>
         <th scope="col">ユーザー</th>
@@ -81,7 +96,8 @@
         {% for book in books %}
       <tr>
         <th scope="row">{{book.pk}}</th>
-        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a>
+        
+        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a></td>
         <td>{{book.subtitle}}</td>
         <td>{{book.category}}</td>
         <td><a class='indexlink' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">{{book.created_by.profiels.nickname}}</a></td>
@@ -96,5 +112,5 @@
   </table>
 </div>
 </div>
-
+</div>
 {% endblock content %}

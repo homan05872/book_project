@@ -1,55 +1,107 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
+
 {% block title %}Book 詳細{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+{% endblock head %}
 
 {% block content %}
 
 
 <div class="container">
-<h1>Book 詳細</h1>
+<h1 class="display-4 mt-5 mb-5" style='text-align: center;'>Book 詳細</h1>
 
-<h3>Book名：{{ book.bookname }}</h3>
-<h4>タイトル：{{book.subtitle}}</h4>
-{% if book.thumbnail %}
-<img src="{{ book.thumbnail.url }}" class="img-thumbnail"><br>
-{% else %}
-<img src= "{% static '/image/default-image.png' %}">
-{% endif %}
-<p>{{ book.text }}</p>
-ユーザー名：{{book.created_by.profiels.nickname}}
-<br>
-カテゴリ:{{ book.category }}
-<br>
-<a href="{% url 'review' book.pk %}">レビューする</a>
-{% if request.user == book.created_by %}
-<a href="{% url 'update' book.pk %}">編集する</a>
-<a href="{% url 'delete' book.pk %}">削除する</a>
-{% endif %}
-<hr>
-<h2 class='subtitle'>コメント</h2>
-<hr>
+<section>
+    <h3>Book名：{{ book.bookname }}</h3><span><small>{{book.timestamp}}</small></span>
+    <div class="card">
+        <div class="row">
+            <div class="col-lg-6 d-flex justify-content-center">
 
-<!--投稿一覧-->
+            {% if book.thumbnail %}
+            <img src="{{ book.thumbnail.url }}" class="img-thumbnail"><br>
+            {% else %}
+            <img src="{% static 'image/default-image.png' %}">
+            {% endif %}
+            </div>
 
-{% for review in reviews %}
-<h3>{{review.title}}</h3>
-<p>{{review.text}}</p>
-<p>評価：{{review.rate}}</p>
-<small>{{review.timestamp}}</small>
-<p>投稿者：{{review.created_by.profiels.nickname}}</p>
-<hr>
-{% endfor %}
+    <div class="col-lg-5 px-0">
+            
+                <h4 class="mt-2">タイトル：{{book.subtitle}}</h4>
+                <p class="my-4">{{book.text}}</p>
 
-<!--投稿フォーム-->
-<h2 class='subtitle'>コメントを投稿する</h2>
-<form method='POST' action="{% url 'new_comment' book.pk %}">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value='作成する'>
-</form>
+                <div class="position-absolute bottom-0 start-0">         
+                    <p class="mb-0"><small>ユーザー:{{book.created_by.profiels.nickname}}</small></p>
+                    
+                    <p class="mb-3"><small>カテゴリ:{{ book.category }}</small></p>
+                    
+            
+                    
+                {% if request.user == book.created_by %}
+                    <a class="btn btn-primary me-2 mb-3" href="{% url 'update' book.pk %}">編集する</a>
+                    <a class="btn btn-primary me-2 mb-3" href="{% url 'delete' book.pk %}">削除する</a>
+                {% endif %}
+            </div>
+        
+    
 
 </div>
+</div>
+</div>
+<br>
+<hr>
+<br>
+</div>
+</section>
 
+
+<!--コメント一覧-->
+<div class="container">
+<h2 class='subtitle'>コメント</h2>
+<!--コメントフォーム-->
+<form method='POST' action="{% url 'new_comment' book.pk %}">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-12">
+            <label id="label-font">評価</label>
+            <p>
+                １<input class="form-check-input" type="radio" name="rate" value="1">
+                ２<input class="form-check-input" type="radio" name="rate" value="2">
+                ３<input class="form-check-input" type="radio" name="rate" value="3">
+                ４<input class="form-check-input" type="radio" name="rate" value="4">
+                ５<input class="form-check-input" type="radio" name="rate" value="5">
+            </p>
+        </div>
+        <div class="col-lg-9">
+            <p>{{form.text |add_class:"form-control"}}</p>
+        </div>
+
+        <div class="col-lg-3">
+        
+            <input type="submit" class="btn btn-primary" value="送信" >
+    </div>
+    </div>
+</form>
+<hr>
+{% for review in reviews %}
+<hr>
+<p>＠{{review.created_by.profiels.nickname}}</p>
+<h3>{{review.title}}</h3>
+<p>{{review.text}}</p>
+<p class="mb-0">評価：{{review.rate}}</p>
+<small>{{review.timestamp}}</small>
+
+{% endfor %}
+
+<br>
+
+
+
+
+</div>
+</div>
 
 
 

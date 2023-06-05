@@ -1,13 +1,20 @@
+:root{
+    --primary: #0d6efd;
+    --dark: #21252f;
+    --body: #888;
+}
+
+
 body {
     font-family: 'Kaisei Opti', serif;
-
 }
 
-nav .navbar{
-    display: block;
-    padding-top: 40px;
+div .formarea .position-relative {
+    margin-top: auto;
 }
 
-ul .nav-item a:hover{
-    color: #fff;
+
+div .searchform .position-absolute .end-0 {
+    margin-top: auto;
 }
+

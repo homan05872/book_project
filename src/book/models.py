@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
 
+
 RATE_CHOICES = [(x, str(x)) for x in range(0, MAX_RATE + 1)]
 
 
@@ -15,6 +16,7 @@ class Profiel(models.Model):
     text = models.TextField('自己紹介')
     sex = models.CharField('性別',choices=(('男性','男性'),('女性','女性')),
                            max_length=50)
+    img = models.ImageField('プロフィール画像', blank=True, null=True)
     
     class Meta:
          db_table = 'profiels'
@@ -27,7 +29,7 @@ class Book(models.Model):
     category = models.CharField(
         'ジャンル',
         max_length=100,
-        choices=CATEGORY
+        choices=CATEGORY,
     )
     timestamp = models.DateTimeField('投稿日',auto_now_add=True)
     thumbnail = models.ImageField('Bookカバー',blank=True,null=True)
@@ -43,8 +45,8 @@ class Book(models.Model):
 
 class Review(models.Model):
     book = models.ForeignKey(Book,related_name='reviews',verbose_name='本', on_delete=models.CASCADE)
-    text = models.TextField('本文')
-    rate = models.IntegerField('評価',choices=RATE_CHOICES)
+    text = models.CharField('本文', max_length=500)
+    rate = models.IntegerField('評価',choices=RATE_CHOICES,)
     timestamp = models.DateTimeField('投稿日',auto_now_add=True)
     created_by = models.ForeignKey(User,related_name='reviewuser', verbose_name='投稿者', on_delete=models.CASCADE)
     
