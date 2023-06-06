@@ -1,5 +1,72 @@
+
+:root{
+    --primary: #0d6efd;
+    --dark: #21252f;
+    --body: #888;
+}    
+
+
 body {
     font-family: 'Kaisei Opti', serif;
-
+    width: 100%;
+    height: 100%;
 }
+/* フッター */
+footer .footer_group{
+    width: 100%;
+    height: 200px;
+    padding: 50px 0;
+    background-color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+
+div.line{
+    width: 100%;
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+}
+
+
+
+div.footer_icon{
+    
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+div.footer_icon a{
+    text-decoration: none;
+    display: inline-block;
+    background-color: orange;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.bx.bxs-book-bookmark{
+    color: whitesmoke;
+    font-size: 35px;
+    
+}
+
+
+.text-link{
+    text-align: center;
+    color: aliceblue;
+}
+
 

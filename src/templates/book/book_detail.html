@@ -10,15 +10,15 @@
 
 {% block content %}
 
-
+<section>
 <div class="container">
 <h1 class="display-4 mt-5 mb-5" style='text-align: center;'>Book 詳細</h1>
 
-<section>
+
     <h3>Book名：{{ book.bookname }}</h3><span><small>{{book.timestamp}}</small></span>
-    <div class="card">
+    
         <div class="row">
-            <div class="col-lg-6 d-flex justify-content-center">
+            <div class="col-lg-6 col-md-12 d-flex">
 
             {% if book.thumbnail %}
             <img src="{{ book.thumbnail.url }}" class="img-thumbnail"><br>
@@ -27,12 +27,12 @@
             {% endif %}
             </div>
 
-    <div class="col-lg-5 px-0">
+    <div class="col-lg-5 col-md-12 px-0">
             
                 <h4 class="mt-2">タイトル：{{book.subtitle}}</h4>
                 <p class="my-4">{{book.text}}</p>
 
-                <div class="position-absolute bottom-0 start-0">         
+                <div class="">         
                     <p class="mb-0"><small>ユーザー:{{book.created_by.profiels.nickname}}</small></p>
                     
                     <p class="mb-3"><small>カテゴリ:{{ book.category }}</small></p>
@@ -40,10 +40,12 @@
             
                     
                 {% if request.user == book.created_by %}
-                    <a class="btn btn-primary me-2 mb-3" href="{% url 'update' book.pk %}">編集する</a>
-                    <a class="btn btn-primary me-2 mb-3" href="{% url 'delete' book.pk %}">削除する</a>
+                    <a class="btn btn-primary me-2 mb-3" href="{% url 'update' book.pk %}">編集</a>
+                    <button class="btn btn-danger me-2 mb-3" href="{% url 'delete' book.pk %}" data-bs-toggle="modal" data-bs-target="#deleteModal-{{book.pk}}">削除</button>
+                    {% include 'book/book_confirm_delete.html' %}
+                    {% comment %} <a class="btn btn-primary me-2 mb-3" href="{% url 'delete' book.pk %}">削除する</a> {% endcomment %}
                 {% endif %}
-            </div>
+
         
     
 
@@ -54,9 +56,10 @@
 <hr>
 <br>
 </div>
+
 </section>
 
-
+<section>
 <!--コメント一覧-->
 <div class="container">
 <h2 class='subtitle'>コメント</h2>
@@ -102,7 +105,7 @@
 
 </div>
 </div>
-
+</section>
 
 
 
