@@ -2,35 +2,32 @@ from urllib import response
 from django.test import TestCase
 from book.models import Book,Review,Profiel,User
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 UserModel = get_user_model()
 
-
-class Model_add_test(TestCase):
+class View_test(TestCase):
     
-    def SetUp(self):
-        self.user = User.objects.create(
-            username = 'test_user',
-            email = 'test@example.com',
-            password = 'secret',    
+    def setUp(self):
+        #Userモデル作成
+        self.user = UserModel.objects.create(
+            username='test_user',
+            password='top_secret_001'
         )
         self.client.force_login(self.user)
         
-    # def test_create_views(self):
-    #     """ユーザーがログイン状態でcreateにアクセス時のステータスコードテスト"""
-    #     response = self.client.get("create/")
-    #     self.assertContains(response, "text", status_code=200)
-            
-    # def test_create_book(self):
-    #     """ユーザーがポスト送信でデータを送った際のBookモデルの保存テスト"""
-    #     response = self.client.get("create/")
-        
-    #     book = '書籍'
-    #     subtitle = 'タイトル'
-    #     text = '本文'
-    #     category = 'ビジネス'
-    #     data = {'bookname':book , 'subtitle':subtitle,'text':text, 'category':category}
-    #     self.client.post('create/',data)
-    #     book = Book.objects.get(bookname=book)
-    #     self.assertContains(response, "text", status_code=200)
-    #     self.assertEqual('タイトル', book.subtitle)
+    def test_login_setup(self):
+        create_url = reverse('create')
+        create_response = self.client.get(create_url)
+        self.assertEqual(create_response.status_code,200)
+      
+      #テストうまくポスト送信できず中断     
+    # def test_create_page(self):
+    #     url = reverse('create')
+    #     created_by = self.user
+    #     profiel = Profiel.objects.get(pk=self.user.pk )
+    #     create_data = {"bookname": "bookname_from_test", "subtitle": "content_from_test","text": "bookname_from_test", "category": "content_from_test"}
+    #     response = self.client.post(url, create_data)
+    #     qs_counter = Book.objects.count()
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertEqual(qs_counter, 1)
