@@ -17,6 +17,11 @@ div.link a{
     z-index: -1;
 }
 
-img.img-thumbnail{
-    width: 250;
+div.text{
+    margin-top: 2%;
+}
+
+img{
+    width: 90%;
+    margin: 2%;
 }

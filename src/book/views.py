@@ -89,8 +89,8 @@ def updateBook(request,pk):
     if request.method == 'POST':
         form = BookForm(request.POST,request.FILES ,instance=book)
         if form.is_valid():
-            book = form.save(commit=False)
-            book.created_by = request.user
+            # book = form.save(commit=False)
+            # book.created_by = request.user
             book.save()
             return redirect('detail', pk=book.pk)
     
