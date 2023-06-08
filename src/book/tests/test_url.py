@@ -2,7 +2,7 @@ from urllib import response
 from django.test import TestCase
 from book.models import Book,Review,Profiel,User
 from django.contrib.auth import get_user_model
-from django.urls import reverse
+from django.urls import reverse, resolve
 
 UserModel = get_user_model()
 
@@ -56,7 +56,7 @@ class status_check302_test(TestCase):
         self.assertEqual(books.count(),1)
         
         #アクセス制限なし    
-        index_url = reverse('index')
+        index_url = reverse("index")
         index_response = self.client.get(index_url)
         booklist_url = reverse('booklist')
         booklist_response = self.client.get(booklist_url)
