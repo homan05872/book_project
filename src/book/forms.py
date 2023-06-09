@@ -7,8 +7,6 @@ class BookForm(forms.ModelForm):
         model = Book
         fields = ('bookname', 'subtitle', 'text','thumbnail', 'category')
         
-        
-
 
 class ReviewForm(forms.ModelForm):
     
@@ -17,8 +15,6 @@ class ReviewForm(forms.ModelForm):
         fields = ("text", "rate")
        
     
-        
-        
 class BookNameSearch(forms.ModelForm):
     bookname = forms.CharField(label='', max_length=50,required=False)
 

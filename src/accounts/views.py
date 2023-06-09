@@ -24,12 +24,12 @@ def profiel_edit(request,pk):
         return HttpResponseForbidden("このBookの編集は許可されていません。")
     
     if request.method == "POST":
-        form = ProfielUpdateForm(request.POST, instance=profiel)
+        form = ProfielUpdateForm(request.POST, request.FILES, instance=profiel)
         if form.is_valid:
             profiel = form.save(commit=False)
             profiel.outher = request.user
             profiel.save()
-            return redirect('index')
+            return redirect('accounts:profiel_detail', pk=request.user.pk)
     else:
         form = ProfielUpdateForm(instance=profiel)
     return render(request,'profiel/profiel_edit.html',{'form':form})

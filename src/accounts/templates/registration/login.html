@@ -1,18 +1,23 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="">
+{% endblock head %}
+
 {% block content %}
 {% block listnav1 %}{% endblock listnav1 %}
 
 {% block listnav2 %}{% endblock listnav2 %}
+<section id="login" style="padding-bottom: 300px;">
 <div class="container">
-    <h1 class="my-5">ログイン</h1>
+    <h1 class="pt-5">ログイン</h1>
     <div class="card-body">
         <form method='POST'>
             {% csrf_token %}
             {% for error in form.errors.values %}
                 {{error}}
             {% endfor %}
-            <label class="mb-2">
+            <label class="mt-5 mb-2">
                 ユーザーID
             </label>
             <input class="form-control m-3" name="username" style="width: 50%;">
@@ -24,6 +29,5 @@
         </form>
       </div>
 </div>
-
-<div class="space"></div>
+</section>
 {% endblock content %}

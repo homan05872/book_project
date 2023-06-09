@@ -8,11 +8,13 @@
     border-radius: 30px;
 } */
 
-.hero{
+/* .hero{
     color: aliceblue;
     background-image: url(../image/welcome.jpg) ;
     background-position: center;
     background-size: cover;
+    background-color:rgba(255, 255, 255, 0.618);
+    
     position: relative;
     z-index: 1;
 }
@@ -26,7 +28,8 @@
     left: 0;
     background-color: rgba(37, 48, 91, 0.7);
     z-index: -1;
-}
+} 
+*/
 
 div.mt-4 a.btn{ 
     padding: 10px 16px; 

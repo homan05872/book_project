@@ -13,9 +13,9 @@ CATEGORY = (('ビジネス','ビジネス'),('生活','生活'),('小説','小�
 class Profiel(models.Model):
     outher = models.OneToOneField(User,related_name='profiels',verbose_name='ユーザー', on_delete=models.CASCADE)
     nickname = models.CharField('ニックネーム',max_length=100)
-    text = models.TextField('自己紹介')
+    text = models.TextField('自己紹介', blank=True,null=True)
     sex = models.CharField('性別',choices=(('男性','男性'),('女性','女性')),
-                           max_length=50)
+                           max_length=50 , blank=True,null=True)
     img = models.ImageField('プロフィール画像', blank=True, null=True)
     
     class Meta:

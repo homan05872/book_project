@@ -11,4 +11,4 @@ class SignupForm(UserCreationForm):
 class ProfielUpdateForm(forms.ModelForm):
     class Meta:
         model = Profiel
-        fields = ('nickname','text','sex')
+        fields = ('nickname', 'text', 'sex', 'img')

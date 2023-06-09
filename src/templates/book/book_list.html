@@ -31,8 +31,8 @@
 
 
 {% block content %}
-
-<h1 class='m-5'>Book 一覧ページ</h1>
+<div id="listpage">
+<h1 class='mb-5 pt-5'>Book 一覧ページ</h1>
 
 <div class="container">
   <!--検索フォーム-->
@@ -70,10 +70,11 @@
       </div>
     </div>
     </div>
-  </div>
+  
 
 
 <!--Book一覧-->
+<section id="booklist">
 <div class="container">
 <div class="row">
 <table class="table">
@@ -107,7 +108,7 @@
   </table>
 </div>
 </div>
-</div>
 
-<div class="space2"></div>
+</section>
+</div>
 {% endblock content %}

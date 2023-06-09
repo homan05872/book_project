@@ -87,7 +87,7 @@ def updateBook(request,pk):
         return HttpResponseForbidden("このBookの編集は許可されていません。")
     
     if request.method == 'POST':
-        form = BookForm(request.POST,request.FILES ,instance=book)
+        form = BookForm(request.POST,request.FILES, instance=book)
         if form.is_valid():
             # book = form.save(commit=False)
             # book.created_by = request.user

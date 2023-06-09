@@ -9,13 +9,19 @@
 {% endblock head %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container pt-5">
     <div class="row d-flex justify-content-center">
         <div class="col-lg-7 mx-auto text-center">
             <div class="card ms-5 me-5">
                 <h5 class="card-header">プロフィール詳細画面</h5>
                 <div class="card-body">
-                    <img src="{% static '/image/background-img.jpeg' %}" class="profiel-img" alt="">
+                    {% if profiel.img %}
+                    <img src="{{ profiel.img.url }}" class="profiel-img">
+                    {% else %}
+                    <img src="{% static 'image/default-image.png' %}" class="profiel-img">
+                    {% endif %}
+                    </div>
+                    
                     <h5 class="mt-5">{{profiel.nickname}}</h5>
                     <p>{{profiel.sex}}</p>
                     <label>～自己紹介～</label>
@@ -26,17 +32,18 @@
     </div>
 </div>
 <!--cardセクション-->
-<section>
+<section id="mybook_list">
 <div class="container mt-5">
     <h2>投稿一覧</h2>
     <div class="card-deck">
-         <div class="row g-4">
+         <div class="row g-5">
             
             
 {% for mybook in mybooks %}
-<div class="col-lg-3 col-sm-6">
+<div class="col-lg-4 col-sm-6">
+    <span class="mt-2"><small>{{mybook.timestamp}}</small></span>
     <a class='link-dark' href="{% url 'detail' mybook.pk %}">
-    <div class="card-effect mt-5 h-100 position-relative">
+    <div class="card-effect h-100 position-relative">
 
 
         {% if mybook.thumbnail %}
@@ -53,7 +60,7 @@
         <p>{{mybook.subtitle}}</p>
         <div class="position-absolute bottom-0 end-0">
             <p class="me-3">カテゴリ:{{mybook.category}}</p>
-            <p class="me-3"><small>{{mybook.timestamp}}</small></p>
+            {% comment %} <p class="me-3"><small>{{mybook.timestamp}}</small></p> {% endcomment %}
         </div>
     </div>
 </a>
@@ -62,7 +69,6 @@
 
 
 {% endfor %}
-</div>
 </div>
 </div>
 </section>

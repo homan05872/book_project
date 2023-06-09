@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="">
+{% endblock head %}
+
 {% block title %}アカウント作成{% endblock title %}
 
 {% block content %}
 {% block listnav1 %}{% endblock listnav1 %}
 
 {% block listnav2 %}{% endblock listnav2 %}
+<section id="signin" style="padding-bottom: 300px;">
 <div class="container">
-<h1 class="mt-5">アカウント作成</h1>
+<h1 class="pt-5">アカウント作成</h1>
 
 <div class="card-body">
 <div class="item-f">
 <form method='post'>
     {% csrf_token %}
-    <label class="my-3">
+    <label class="mt-5 mb-3">
         ユーザーID
     </label>
     <input type="text" name='username' class="form-control ms-3" placeholder="ユーザーID" style="width: 50%;">
@@ -34,5 +39,5 @@
 </div>
 </div>
 </div>
-<div class="space"></div>
+</section>
 {% endblock content %}

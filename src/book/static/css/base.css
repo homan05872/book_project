@@ -76,3 +76,11 @@ div.footer_icon a{
 .space2{
     margin: 300px;
 }
+
+div.wrapper{
+    background-image: url(../image/Book_list_background.jpeg) ;
+    background-size: cover;
+    background-color:rgba(255, 255, 255, 0.575);
+    background-blend-mode:lighten;
+
+}
