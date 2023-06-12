@@ -1,28 +1,39 @@
-:root{
-    --primary: #0d6efd;
-    --dark: #21252f;
-    --body: #888;
-}
 
-a {
-    color: var(--dark);
-    text-decoration: none;
-  }
 
-div#home{
-    background-image: url(../../static/image/welcome.jpg) !important;
+/* .welcome{
+    color: aliceblue;
+    padding: 3rem 0;
+    margin: 2rem;
+    background-color: rgba(218, 210, 210, 0.7);
+    border-radius: 30px;
+} */
+
+/* .hero{
+    color: aliceblue;
+    background-image: url(../image/welcome.jpg) ;
     background-position: center;
     background-size: cover;
+    background-color:rgba(255, 255, 255, 0.618);
+    
+    position: relative;
     z-index: 1;
 }
 
+.hero::after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(37, 48, 91, 0.7);
+    z-index: -1;
+} 
+*/
 
-.welcome{
-    padding: 3rem 0;
-    margin: 2rem;
-    background-color: #eee;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    border-radius: 30px;
+div.mt-4 a.btn{ 
+    padding: 10px 16px; 
+    border-width: 2px;
 }
+
+

@@ -1,11 +1,53 @@
+:root{
+    --primary: #0d6efd;
+    --dark: #21252f;
+    --body: #888;
+}
+
+#listpage{
+    background-image: url(../image/Book_list_background.jpeg) ;
+    background-size: cover;
+    background-color:rgba(255, 255, 255, 0.575);
+    background-blend-mode:lighten;
+}
+
+
+#booklist div.container{
+    padding-bottom: 500px;
+}
+
 h1{
     text-align: center;
 }
 
-div .formarea{
-    text-align: end;
+a.indexlink{
+    color:inherit;
+    text-decoration: none;
+    color: #b22222;
+    border-bottom:2px solid #b22222;
 }
 
-img.card_img{
-    height: 5rem;
+
+.search-form{
+    width: 70%;
+    display: inline;
+}
+
+
+div.space{
+    height: 300px;
+}
+
+div.plus_icon a{
+    color: #b22222;
+    font-size: 40px;
+    margin-top: 20%;
+}
+
+div.plus_icon a:hover{
+    color: #921c1c;
+}
+
+.bi .bi-plus-square-fill{
+    font-size: 50px;
 }
