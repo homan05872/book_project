@@ -6,4 +6,6 @@ div .formarea{
     text-align: end;
 }
 
-
+img.card_img{
+    height: 5rem;
+}

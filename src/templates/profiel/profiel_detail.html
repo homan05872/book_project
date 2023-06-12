@@ -20,7 +20,6 @@
                     {% else %}
                     <img src="{% static 'image/default-image.png' %}" class="profiel-img">
                     {% endif %}
-                    </div>
                     
                     <h5 class="mt-5">{{profiel.nickname}}</h5>
                     <p>{{profiel.sex}}</p>
@@ -43,32 +42,32 @@
 <div class="col-lg-4 col-sm-6">
     <span class="mt-2"><small>{{mybook.timestamp}}</small></span>
     <a class='link-dark' href="{% url 'detail' mybook.pk %}">
-    <div class="card-effect h-100 position-relative">
+    <div class="card-effect h-100">
 
-
-        {% if mybook.thumbnail %}
-        <img src="{{ mybook.thumbnail.url }}" class="card-img-top card_img"><br>
-        {% else %}
-        <img src= "{% static '/image/default-image.png' %}" class="card-img-top p-2">
-        {% endif %}
-
-        <div class="card-body">
-            <label class="">書籍名：</label>
+        <div class="card_body">
+            <div class="d-flex justify-content-center" style="min-height: 195px;">
+                {% if mybook.thumbnail %}
+                <img src="{{ mybook.thumbnail.url }}" class="card_img w-100" style="min-height: 195px;"><br>
+                {% else %}
+                <img src= "{% static '/image/default-image.png' %}" class="card_img w-100">
+                {% endif %}
+            </div>    
+        <div class="card_text">
+            <small>書籍名：</small>
             <h5 class="card-title">{{mybook.bookname}}</h5>
 
-            <label class="">タイトル：</label>
-        <p>{{mybook.subtitle}}</p>
-        <div class="position-absolute bottom-0 end-0">
-            <p class="me-3">カテゴリ:{{mybook.category}}</p>
-            {% comment %} <p class="me-3"><small>{{mybook.timestamp}}</small></p> {% endcomment %}
+            <small>タイトル：</small>
+            <p>{{mybook.subtitle}}</p>
+        
+            <p class="m-2">カテゴリ:{{mybook.category}}</p>
         </div>
     </div>
+</div>
 </a>
 </div>
-</div>
-
 
 {% endfor %}
+</div>
 </div>
 </div>
 </section>

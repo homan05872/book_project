@@ -1,4 +1,5 @@
 #あとから追記分（オリジナル）
+*.bk
 .vscode
 main.sock
 local.py

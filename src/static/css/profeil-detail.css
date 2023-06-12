@@ -5,9 +5,8 @@
     --box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
 }
 
-.card_img{
-    width: 312px !important;
-    height: 234px !important;
+img.card-img-top.card_img{
+    height: 50%;
 }
 
 div.cardeffect{
@@ -16,5 +15,6 @@ div.cardeffect{
     width: auto;
     background-color: #0d6efd;
 }
+
 
 
