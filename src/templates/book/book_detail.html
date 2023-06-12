@@ -10,6 +10,20 @@
 
 {% block content %}
 
+{% for message in messages %}
+    {% if message.tags == "error" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% else %}
+    <div {% if message.tags %}class="alert alert-{{ message.tags }} alert-dismissible fade show"{% endif %} role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}    
+    {% endfor %}
+
 <section>
 <div class="container">
 <h1 class="display-4 pt-5 mb-5" style='text-align: center;'>Book 詳細</h1>
@@ -72,14 +86,15 @@
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-12">
-            <label id="label-font">評価</label>
-            <p>
-                １<input class="form-check-input" type="radio" name="rate" value="1">
-                ２<input class="form-check-input" type="radio" name="rate" value="2">
-                ３<input class="form-check-input" type="radio" name="rate" value="3">
-                ４<input class="form-check-input" type="radio" name="rate" value="4">
-                ５<input class="form-check-input" type="radio" name="rate" value="5">
-            </p>
+            <p><label id="label-font">評価</label>
+                <p>
+                    ０<input class="form-check-input" type="radio" name="rate" value="0">
+                    １<input class="form-check-input" type="radio" name="rate" value="1">
+                    ２<input class="form-check-input" type="radio" name="rate" value="2">
+                    ３<input class="form-check-input" type="radio" name="rate" value="3">
+                    ４<input class="form-check-input" type="radio" name="rate" value="4">
+                    ５<input class="form-check-input" type="radio" name="rate" value="5">
+                </p>
         </div>
         <div class="col-lg-9">
             <p>{{form.text |add_class:"form-control"}}</p>
@@ -88,6 +103,11 @@
         <div class="col-lg-3">
         
             <input type="submit" class="btn btn-primary" value="送信" >
+
+        
+        
+        
+        
     </div>
     </div>
 </form>

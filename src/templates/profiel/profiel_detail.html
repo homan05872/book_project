@@ -9,6 +9,22 @@
 {% endblock head %}
 
 {% block content %}
+
+{% for message in messages %}
+    {% if message.tags == "error" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% else %}
+    <div {% if message.tags %}class="alert alert-{{ message.tags }} alert-dismissible fade show"{% endif %} role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}    
+    {% endfor %}
+
+
 <div class="container pt-5">
     <div class="row d-flex justify-content-center">
         <div class="col-lg-7 mx-auto text-center">
@@ -25,7 +41,13 @@
                     <p>{{profiel.sex}}</p>
                     <label>～自己紹介～</label>
                     <p class='card-text my-2'>{{profiel.text}}</p>
+                {% if request.user == profiel.outher %}
+                <div class="edit_button">
+                    
+                    <a class="btn btn-primary me-2 mt-5 w-100" href="{% url 'accounts:profiel_edit' profiel.pk %}">編集</a>
+
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

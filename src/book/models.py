@@ -46,7 +46,7 @@ class Book(models.Model):
 class Review(models.Model):
     book = models.ForeignKey(Book,related_name='reviews',verbose_name='本', on_delete=models.CASCADE)
     text = models.CharField('本文', max_length=500)
-    rate = models.IntegerField('評価',choices=RATE_CHOICES,)
+    rate = models.IntegerField('評価',choices=RATE_CHOICES,blank=False,null=False)
     timestamp = models.DateTimeField('投稿日',auto_now_add=True)
     created_by = models.ForeignKey(User,related_name='reviewuser', verbose_name='投稿者', on_delete=models.CASCADE)
     

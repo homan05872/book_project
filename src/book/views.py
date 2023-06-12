@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -55,8 +56,13 @@ def new_review(request,pk):
             review.created_by = request.user
             review.book = book
             review.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 "コメントを投稿しました。")
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 "コメントを投稿しました。")
     else:
-        messages.add_message(request,messages.ERROR,'コメント投稿に失敗しました。')
+        form = ReviewForm()
     
     return redirect('detail', pk=book.pk)
         
@@ -73,11 +79,44 @@ def createBook(request):
             book.created_by = request.user
             book.profiel_connect = Profiel.objects.get(pk = request.user.pk)
             book.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 "Bookレビューが作成が完了しました。")
             return redirect('detail', pk=book.pk )
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 "Bookレビューの作成に失敗しました。")
     else:
         form = BookForm()
             
     return render(request,'book/book_form.html',{'form':form})
+
+
+class CreateBook(CreateView):
+    template_name = ('book/book_form.html')
+    model = Book
+    form_class = BookForm
+    success_url = reverse_lazy('booklist')
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwgs = super().get_form_kwargs(*args, **kwargs)
+        kwgs["user"] = self.request.user
+        return kwgs 
+    
+    
+class CreateReview(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = ('book', 'text', 'rate')
+    template_name = 'book/review_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['book'] = Book.objects.get(pk=self.kwargs['book_id'])
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 @login_required
 def updateBook(request,pk):
@@ -89,14 +128,19 @@ def updateBook(request,pk):
     if request.method == 'POST':
         form = BookForm(request.POST,request.FILES, instance=book)
         if form.is_valid():
-            # book = form.save(commit=False)
-            # book.created_by = request.user
             book.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 "Bookレビューの編集が完了しました。")
             return redirect('detail', pk=book.pk)
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 "Bookレビューの編集に失敗しました。")
     
     else:
         form = BookForm(instance=book)    
     return render(request,'book/book_update.html',{'form': form})
+
+
 
 class UpdateBook(UpdateView):
     model = Book
@@ -136,14 +180,6 @@ class CreateReview(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('index')
-
-
-
-
-
 # 未使用
 
 class ListBook(ListView):
@@ -156,9 +192,3 @@ class DetailBook(DetailView):
 
     def get_success_url(self):
         return reverse('detail', kwargs={'pk': self.object.book.id})
-
-class CreateBook(CreateView):
-    template_name = ('book/book_form.html')
-    model = Book
-    fields = ('title', 'text', 'category')
-    success_url = reverse_lazy('booklist')

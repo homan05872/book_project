@@ -9,12 +9,17 @@ from .forms import SignupForm, ProfielUpdateForm
 from django.urls import reverse_lazy 
 
 from book.models import Profiel,Book
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 
-class SignupView(CreateView):
+
+class SignupView(SuccessMessageMixin,CreateView):
     model = User
     form_class = SignupForm
     template_name = 'registration/signup.html'
     success_url = reverse_lazy('index')
+    success_message = 'アカウント登録が完了しました。'
+        
     
 
 def profiel_edit(request,pk):
@@ -29,7 +34,14 @@ def profiel_edit(request,pk):
             profiel = form.save(commit=False)
             profiel.outher = request.user
             profiel.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 "プロフィールの編集が完了しました。")
             return redirect('accounts:profiel_detail', pk=request.user.pk)
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 "プロフィールの編集に失敗しました。")
+            return redirect('accounts:profiel_edit', pk=request.user.pk)
+        
     else:
         form = ProfielUpdateForm(instance=profiel)
     return render(request,'profiel/profiel_edit.html',{'form':form})
