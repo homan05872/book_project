@@ -30,6 +30,7 @@ class Book(models.Model):
         'ジャンル',
         max_length=100,
         choices=CATEGORY,
+        null=False
     )
     timestamp = models.DateTimeField('投稿日',auto_now_add=True)
     thumbnail = models.ImageField('Bookカバー',blank=True,null=True)

@@ -13,7 +13,7 @@
 
 
 #booklist div.container{
-    padding-bottom: 500px;
+    padding-bottom: 50px;
 }
 
 h1{
@@ -50,4 +50,8 @@ div.plus_icon a:hover{
 
 .bi .bi-plus-square-fill{
     font-size: 50px;
+}
+
+div.d-flex.justify-content-center{
+    margin: 80px;
 }

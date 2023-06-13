@@ -14,6 +14,7 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ("text", "rate")
        
+
     
 class BookNameSearch(forms.ModelForm):
     bookname = forms.CharField(label='', max_length=50,required=False)

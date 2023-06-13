@@ -40,10 +40,10 @@ class View_test_access(TestCase):
         update_view = resolve('/update/1/')
         delete_view = resolve('/delete/1/')
         self.assertEquals(index_view.func.view_class, views.IndexBook)
-        self.assertEquals(list_view.func, views.listBook)
+        self.assertEquals(list_view.func.view_class, views.ListBook)
         self.assertEquals(detail_view.func, views.detailBook)
-        self.assertEquals(create_view.func, views.createBook)
-        self.assertEquals(update_view.func, views.updateBook)
+        self.assertEquals(create_view.func.view_class, views.CreateBook)
+        self.assertEquals(update_view.func.view_class, views.UpdateBook)
         self.assertEquals(delete_view.func.view_class, views.DeleteBook)
         
         
@@ -82,6 +82,9 @@ class list_view_test(TestCase):
         self.assertContains(response, book[0].bookname)
         self.assertNotContains(response, book[1].bookname)
         self.assertNotContains(response, book[2].bookname)
+        self.assertContains(response, book[0].subtitle)
+        self.assertNotContains(response, book[1].subtitle)
+        self.assertNotContains(response, book[2].subtitle)
         
     def test_book_search(self):
         """serarchformテスト(2で検索した場合)"""
@@ -91,15 +94,21 @@ class list_view_test(TestCase):
         self.assertContains(response, book[1].bookname)
         self.assertNotContains(response, book[0].bookname)
         self.assertNotContains(response, book[2].bookname)
+        self.assertContains(response, book[1].subtitle)
+        self.assertNotContains(response, book[0].subtitle)
+        self.assertNotContains(response, book[2].subtitle)
     
     def test_book_search(self):
         """serarchformテスト(3で検索した場合)"""
         book = Book.objects.all()
-        response = self.client.get("/list/?bookname=3")
+        response = self.client.get("/list/?book=3")
         self.assertContains(response, "Book 一覧ページ")
         self.assertContains(response, book[2].bookname)
         self.assertNotContains(response, book[0].bookname)
         self.assertNotContains(response, book[1].bookname)
+        self.assertContains(response, book[2].subtitle)
+        self.assertNotContains(response, book[0].subtitle)
+        self.assertNotContains(response, book[1].subtitle)
         
     def test_access_booklist(self):
         """Booklist_レスポンスチェックテスト"""

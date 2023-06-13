@@ -44,28 +44,15 @@
   <!--検索フォーム-->
   <div class="row d-flex justify-content-end">
 
-    <div class="col-lg-6 mb-5 ">
-      
-    {% if bookSearchForm %}<!-- searchFormがあれば -->
-      <span>書籍名検索</span>
-      <form action="{% url 'booklist' %}" class="form-inline" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
-        <div class="form-group mr-3">
-          {{ bookSearchForm.bookname |add_class:"form-control search-form" }}<!-- views.pyから受け取ったsearchFormを表示 -->
-          <input type="submit" class="btn btn-primary mb-2" value="検索">
-          <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
-        </div>
-      </form>
-    {% endif %}
-    
-    {% if subtitleSearchForm %}<!-- searchFormがあれば -->
-      <span>タイトル検索</span>
-      <form action="{% url 'booklist' %}" method="get"><!-- getメソッドでインデックス関数を呼び出す -->
-          {{ subtitleSearchForm.subtitle |add_class:"form-control search-form"}}<!-- views.pyから受け取ったsearchFormを表示 -->
-          <input type="submit" class="btn btn-primary mb-2" value="検索">
-          <a href="{% url 'booklist' %}">クリア</a><!-- postメソッドでインデックス関数を呼び出す -->
-      </form> 
-    {% endif %}
+    <div class="col-lg-10 mb-5 p-0 d-flex justify-content-end me-5">
+      <div>
+        <form class="d-flex" action="{% url 'booklist' %}" method="get">
+          <input type="Search" class="form-control me-2" placeholder="Search" name="book">
+          <input class="btn btn-outline-primary me-2" type="submit" value="検索">
+        </form>
       </div>
+        <a href="{% url 'booklist' %}" class="btn btn-outline-primary">クリア</a>  
+    </div>
 
       <div class="col-lg-12">
         <div class="plus_icon">
@@ -83,6 +70,7 @@
 <section id="booklist">
 <div class="container">
 <div class="row">
+
 <table class="table">
     <thead>
       <tr>
@@ -95,7 +83,7 @@
       </tr>
     </thead>
     <tbody>
-        {% for book in books %}
+        {% for book in book_list %}
       <tr>
         <th scope="row">{{book.pk}}</th>
         
@@ -113,8 +101,33 @@
     </tbody>
   </table>
 </div>
-</div>
+<!--ページネーション-->
+<div class="d-flex justify-content-center" >
+  <ul class="pagination">
+    {% comment %} 前へ {% endcomment %}
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">前へ</a></li>
+    {% endif %}
 
+    {% comment %} 間のページ {% endcomment %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% comment %} 次へ {% endcomment %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">次へ</a></li>
+    {% endif %}
+  </ul>
+</div>
+</div>
 </section>
+
+
+
 </div>
 {% endblock content %}

@@ -96,7 +96,7 @@
                     ５<input class="form-check-input" type="radio" name="rate" value="5">
                 </p>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-6">
             <p>{{form.text |add_class:"form-control"}}</p>
         </div>
 
@@ -114,7 +114,7 @@
 <hr>
 {% for review in reviews %}
 <hr>
-<p>＠{{review.created_by.profiels.nickname}}</p>
+{% comment %} <p>＠{{review.created_by.profiels.nickname}}</p> {% endcomment %}
 <h3>{{review.title}}</h3>
 <p>{{review.text}}</p>
 <p class="mb-0">評価：{{review.rate}}</p>
