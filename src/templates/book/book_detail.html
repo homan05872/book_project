@@ -10,25 +10,10 @@
 
 {% block content %}
 
-{% for message in messages %}
-    {% if message.tags == "error" %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% else %}
-    <div {% if message.tags %}class="alert alert-{{ message.tags }} alert-dismissible fade show"{% endif %} role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}    
-    {% endfor %}
-
 <section>
+
 <div class="container">
 <h1 class="display-4 pt-5 mb-5" style='text-align: center;'>Book 詳細</h1>
-
-
     <h3>Book名：{{ book.bookname }}</h3><span><small>{{book.timestamp}}</small></span>
     
         <div class="row">
@@ -50,9 +35,10 @@
                 </div>
 
                 <div>
-                    <p class="mb-0"><small>ユーザー:{{book.created_by.profiels.nickname}}</small></p>
+                    <p class="mb-0"><small>カテゴリ:{{ book.category }}</small></p>
+                    {% comment %} <p class="mb-0"><small>性別:{{book.profiel_connect.sex}}</small></p> {% endcomment %}
+                    <p class="mb-3"><small>ユーザー:{{book.profiel_connect.nickname}}</small></p>
                     
-                    <p class="mb-3"><small>カテゴリ:{{ book.category }}</small></p>
                 </div>    
             
                 <div class="edit_button">
@@ -114,7 +100,7 @@
 <hr>
 {% for review in reviews %}
 <hr>
-{% comment %} <p>＠{{review.created_by.profiels.nickname}}</p> {% endcomment %}
+<p>＠{{review.created_by.profiels.nickname}}</p>
 <h3>{{review.title}}</h3>
 <p>{{review.text}}</p>
 <p class="mb-0">評価：{{review.rate}}</p>

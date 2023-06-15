@@ -22,9 +22,11 @@
         {% include 'templateh/nav.html' %}
 
 <main>
-      <div class="wrapper">
+  <div class="wrapper">
+        {% include 'templateh/messages.html' %}
+      
         {% block content %}{% endblock content %}
-      </div>
+  </div>
 </main>
       
         {% include 'templateh/footer.html' %}

@@ -33,12 +33,6 @@
 {% block content %}
 <div id="listpage">
 <h1 class='mb-5 pt-5'>Book 一覧ページ</h1>
-
-{% for message in messages %}
-    <div {% if message.tags %}class="{{ message.tags }}"{% endif %}>
-        {{ message }}
-    </div>
-    {% endfor %}
     
 <div class="container">
   <!--検索フォーム-->

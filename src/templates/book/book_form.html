@@ -6,14 +6,14 @@
 <link rel="stylesheet" href="{% static 'css/book_form.css' %}">
 {% endblock head %}
 
-{% block title %}新規作成{% endblock title %}
+{% block title %}{{title}}{% endblock title %}
 
 {% block content %}
 
 <section id="book_form">
 <div class="container">
 
-<h1 class='py-5' style="text-align: center;">紹介したい本のレビューを記載してください。</h1>
+<h1 class='py-5 display-4' style="text-align: center;">{{ title_h1 }}</h1>
 <div class="card">
     <div class="m">
 <form method='POST' enctype="multipart/form-data">

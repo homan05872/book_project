@@ -1,4 +1,5 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
+from django.db import models
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
@@ -7,30 +8,23 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Book, Review, Profiel
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm, ReviewForm,BookNameSearch,SubtitleSearch
 from django.contrib import messages
 from django.db.models import Q
 
-#現在未使用
-# from django import forms
-# CATEGORY = (('ビジネス','ビジネス'),('生活','生活'),('小説','小説'),('マンガ','マンガ'),('その他','その他'),)
 
-# class CategorySearch(forms.Form):
-#   category = forms.fields.ChoiceField(
-#     choices = (
-#       # (formのoptionのvalue, 表示名)
-#       ('------','------'),
-#       ('ビジネス','ビジネス'),
-#       ('生活','生活'),
-#       ('小説','小説'),
-#       ('マンガ','マンガ'),
-#       ('その他','その他'),
-#     ),
-#     required=False,
-#     widget=forms.widgets.Select
-#   )
+class OwnerOnly(UserPassesTestMixin):
+  #アクセス制限
+  def test_func(self):
+    book_instance = self.get_object() #クラスベースビューにある関数で、使用してるモデルobjectを取得できる関数！
+    return book_instance.created_by == self.request.user
+  
+  #↑上記関数がFalseだった時のリダイレクト先を指定
+  def handle_no_permission(self):
+    messages.error(self.request, "このBookレビューの編集・削除はできません。")
+    return redirect("detail", pk=self.kwargs["pk"])
 
 
 class IndexBook(TemplateView):
@@ -79,35 +73,68 @@ class ListBook(ListView):
 #     return render(request, "book/book_list.html", {"books": books,"bookSearchForm":bookSearchForm,"subtitleSearchForm":subtitleSearchForm})
 
 
-@login_required
-def detailBook(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    reviews = Review.objects.filter(book=book.id).select_related('created_by__profiels').all().order_by("-timestamp")
-    form = ReviewForm()
+class DetailBook(LoginRequiredMixin,DetailView):
+    model = Book
+    context_object_name = "book"
     
-    return render(request, 'book/book_detail.html', 
-                  {'book': book,"reviews":reviews,'form':form})
+    # 追加
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        # テンプレートにコメント作成フォームを渡す
+        form = ReviewForm
+        reviews = self.object.reviews.select_related('created_by__profiels').all().order_by("-timestamp")
+        context.update({
+            'reviews': reviews, 
+            'form': form,
+        })
+        return context
+    
+        
+class ReviewCreate(LoginRequiredMixin,CreateView):
+    model = Review
+    form_class = ReviewForm
+    
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        book_pk = self.kwargs.get('pk')
+        book = get_object_or_404(Book, pk=book_pk)
+ 
+        comment = form.save(commit=False)
+        comment.book = book
+        comment.save()
+ 
+        return redirect('detail', pk=book_pk)
+        
 
-#コメント投稿
-@login_required
-def new_review(request,pk):
-    book = get_object_or_404(Book, pk=pk)
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.created_by = request.user
-            review.book = book
-            review.save()
-            messages.add_message(request, messages.SUCCESS,
-                                 "コメントを投稿しました。")
-        else:
-            messages.add_message(request, messages.ERROR,
-                                 "コメントを投稿しました。")
-    else:
-        form = ReviewForm()
+# @login_required
+# def detailBook(request, pk):
+#     book = get_object_or_404(Book, pk=pk)
+#     reviews = Review.objects.filter(book=book.id).select_related('created_by__profiels').all().order_by("-timestamp")
+#     form = ReviewForm()
     
-    return redirect('detail', pk=book.pk)
+#     return render(request, 'book/book_detail.html', 
+#                   {'book': book,"reviews":reviews,'form':form})
+
+# #コメント投稿
+# @login_required
+# def new_review(request,pk):
+#     book = get_object_or_404(Book, pk=pk)
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.created_by = request.user
+#             review.book = book
+#             review.save()
+#             messages.add_message(request, messages.SUCCESS,
+#                                  "コメントを投稿しました。")
+#         else:
+#             messages.add_message(request, messages.ERROR,
+#                                  "コメントを投稿しました。")
+#     else:
+#         form = ReviewForm()
+    
+#     return redirect('detail', pk=book.pk)
 
         
         
@@ -129,6 +156,11 @@ class CreateBook(LoginRequiredMixin ,CreateView):
                                  "Bookレビューの作成に失敗しました。")
             return redirect('create')
         
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["title"] = "Bookアプリ｜Bookレビュー新規作成"
+        ctx["title_h1"] = "紹介したい本のレビューを記載してください。"
+        return ctx
 
 
 # @login_required
@@ -154,22 +186,33 @@ class CreateBook(LoginRequiredMixin ,CreateView):
 
 
 
-class UpdateBook(LoginRequiredMixin,UpdateView):
+class UpdateBook(OwnerOnly, UpdateView):
     model = Book
-    fields = ('bookname', 'subtitle', 'text', 'thumbnail', 'category')
+    form_class = BookForm
     
-    def form_valid(self, form):
-        if form.is_valid:
-            book = form.save(commit=False)
-            book.save()
-            messages.add_message(self.request, messages.SUCCESS,
-                                    "Bookレビューの編集が完了しました。")
-            return redirect('detail', pk=book.pk)
+    def get_success_url(self):
+        messages.success(self.request, "Bookレビューの編集が完了しました。")
+        return reverse('detail', kwargs={'pk': self.kwargs['pk']})
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["title"] = "Bookアプリ｜Bookレビュー編集"
+        ctx["title_h1"] = "編集画面"
+        return ctx
+    
+    
+    # def form_valid(self, form):
+    #     if form.is_valid:
+    #         book = form.save(commit=False)
+    #         book.save()
+    #         messages.add_message(self.request, messages.SUCCESS,
+    #                                 "Bookレビューの編集が完了しました。")
+    #         return redirect('detail', pk=book.pk)
 
-        else:
-            messages.add_message(self.request, messages.ERROR,
-                                 "Bookレビューの編集に失敗しました。")
-            return redirect('update', pk=book.pk)
+    #     else:
+    #         messages.add_message(self.request, messages.ERROR,
+    #                              "Bookレビューの編集に失敗しました。")
+    #         return redirect('update', pk=book.pk)
 
 
 
@@ -196,9 +239,13 @@ class UpdateBook(LoginRequiredMixin,UpdateView):
 #     return render(request,'book/book_update.html',{'form': form})
         
 
-class DeleteBook(LoginRequiredMixin,DeleteView):
+class DeleteBook(OwnerOnly, DeleteView):
     model = Book
     success_url = reverse_lazy('booklist')
+    
+    def get_success_url(self):
+        messages.success(self.request, "Bookレビューの削除が完了しました。")
+        return reverse_lazy('booklist')
 
 
 
