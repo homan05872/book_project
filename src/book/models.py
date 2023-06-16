@@ -1,9 +1,9 @@
 from django.db import models
-from .consts import MAX_RATE
-from django.contrib.auth.models import User
+from . consts import MAX_RATE
 from django.db.models.signals import post_save
+from django.contrib.auth import get_user_model
 
-
+User = get_user_model()
 
 RATE_CHOICES = [(x, str(x)) for x in range(0, MAX_RATE + 1)]
 
@@ -11,7 +11,7 @@ RATE_CHOICES = [(x, str(x)) for x in range(0, MAX_RATE + 1)]
 CATEGORY = (('ビジネス','ビジネス'),('生活','生活'),('小説','小説'),('マンガ','マンガ'),('その他','その他'),)
 
 class Profiel(models.Model):
-    outher = models.OneToOneField(User,related_name='profiels',verbose_name='ユーザー', on_delete=models.CASCADE)
+    outher = models.OneToOneField(User,related_name='profiels', verbose_name='ユーザー', on_delete=models.CASCADE)
     nickname = models.CharField('ニックネーム',max_length=100)
     text = models.TextField('自己紹介', blank=True,null=True)
     sex = models.CharField('性別',choices=(('男性','男性'),('女性','女性')),
@@ -58,15 +58,12 @@ class Review(models.Model):
          db_table = 'reviews'
 
 
-
-
-
 #OneToOneでUserモデルと紐づけるため
 #この関数はユーザーモデルが作成された際に、Profielモデルが自動生成されるようになっている。
 def post_user_created(sender, instance, created, **kwargs):
     if created:
         profile_obj = Profiel(outher=instance) #instance = 作成されたUserモデルクラスのオブジェクトの事
-        profile_obj.nickname = instance.username
+        profile_obj.nickname = instance.nickname
         profile_obj.save()
 
 post_save.connect(post_user_created, sender=User)
