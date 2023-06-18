@@ -1,17 +1,14 @@
-from django.http import HttpResponseForbidden
 from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib.auth.models import User
-
 from django.views.generic import CreateView, UpdateView, DetailView
-
 from .forms import SignupForm, ProfielUpdateForm
-
-from django.urls import reverse_lazy, reverse 
-
-from book.models import Profiel,Book
+from django.urls import reverse_lazy, reverse
+from book.models import Profiel
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class OwnerOnly(UserPassesTestMixin):
   #アクセス制限
@@ -25,14 +22,12 @@ class OwnerOnly(UserPassesTestMixin):
     return redirect("accounts:profiel_detail", pk=self.kwargs["pk"])
 
 
-
-class SignupView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
+class SignupView(SuccessMessageMixin,CreateView):
     model = User
     form_class = SignupForm
     template_name = 'registration/signup.html'
     success_url = reverse_lazy('index')
     success_message = 'アカウント登録が完了しました。'
-        
     
     
 class Profiel_edit(OwnerOnly,UpdateView):
@@ -42,6 +37,7 @@ class Profiel_edit(OwnerOnly,UpdateView):
     
     def get_success_url(self):
         return reverse('accounts:profiel_detail', kwargs={'pk': self.kwargs['pk']})
+
 
 # def profiel_edit(request,pk):
 #     profiel = get_object_or_404(Profiel, pk=pk)
@@ -67,7 +63,7 @@ class Profiel_edit(OwnerOnly,UpdateView):
 #         form = ProfielUpdateForm(instance=profiel)
 #     return render(request,'profiel/profiel_edit.html',{'form':form})
 
-class DetailProfiel(DetailView):
+class DetailProfiel(LoginRequiredMixin ,DetailView):
     model = Profiel
     context_object_name = 'profiel'
     template_name = 'profiel/profiel_detail.html'
@@ -79,11 +75,11 @@ class DetailProfiel(DetailView):
         
 
 
-def profiel_detail(request,pk):
-    profiel = get_object_or_404(Profiel,pk=pk)
-    profiel_connect = Profiel.objects.filter(pk=pk).prefetch_related('profiel_connect')
-    mybooks = profiel_connect[0].profiel_connect.all()
+# def profiel_detail(request,pk):
+#     profiel = get_object_or_404(Profiel,pk=pk)
+#     profiel_connect = Profiel.objects.filter(pk=pk).prefetch_related('profiel_connect')
+#     mybooks = profiel_connect[0].profiel_connect.all()
     
-    return render(request, 'profiel/profiel_detail.html',{'profiel':profiel,'mybooks':mybooks})
+#     return render(request, 'profiel/profiel_detail.html',{'profiel':profiel,'mybooks':mybooks})
 
 

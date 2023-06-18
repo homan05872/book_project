@@ -34,7 +34,6 @@ LOGOUT_REDIRECT_URL = 'index'
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,8 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'django_extensions',
+    'django_extensions', 
+    #Djangoall-auth     
+    'django.contrib.sites',    
+    'allauth',     
+    'allauth.account',     
+    'allauth.socialaccount',
+    #widget_tweaks
     'widget_tweaks',
+    #crispy_forms
+    'crispy_forms',
+    'crispy_bootstrap5',
+    #アプリ
+    'accounts',
     'book',
 ]
 
@@ -140,6 +150,38 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#Django-allauth signupformの設定（上書きのため）
+ACCOUNT_FORMS = {
+'signup': 'accounts.forms.CustomSignupForm',
+}
+
+#Django-allauth設定
+AUTHENTICATION_BACKENDS = [ 
+  'django.contrib.auth.backends.ModelBackend',     
+  'allauth.account.auth_backends.AuthenticationBackend',
+] 
+
+SITE_ID = 3
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False 
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+
+#loginのデフォルトでのリダイレクト先がprofileになっているためエラーになってしまう
+#リダイレクト先を下記のようにして上書きする
+from django.urls import reverse_lazy
+LOGIN_REDIRECT_URL = reverse_lazy('booklist')
+ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy("account_login")
+
+#ログアウトした際の確認画面を省いて、ログアウトする設定
+ACCOUNT_LOGOUT_ON_GET = True
+
+#cirspy_form
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
 #ログ設定のテストするため、コメントアウト
 # LOGGING = {
 #     'version': 1,
@@ -157,3 +199,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         },
 #     },
 # }
+

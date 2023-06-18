@@ -42,11 +42,11 @@
           </li>
           {% else %}
           <li class="nav-item active">
-          <a href="{% url 'accounts:login' %}" class="text-white btn btn-primary my-1 mx-2">ログイン</a>
+          <a href="{% url 'account_login' %}" class="text-white btn btn-primary my-1 mx-2">ログイン</a>
           </li>
           {% endif %}
           <li class="nav-item active">
-          <a href="{% url 'accounts:signup' %}" class="text-white btn btn-primary my-1 mx-2">会員登録</a>
+          <a href="{% url 'account_signup' %}" class="text-white btn btn-primary my-1 mx-2">会員登録</a>
           </li>
         </ul>
       </div>

@@ -19,9 +19,15 @@
 <form method='post'>
     {% csrf_token %}
     <label class="mt-5 mb-3">
-        ユーザーID
+        Eメールアドレス
     </label>
-    <input type="text" name='username' class="form-control ms-3" placeholder="ユーザーID" style="width: 50%;">
+    <input type="email" name='email' class="form-control ms-3" placeholder="Eメール" style="width: 50%;">
+
+    <label class="my-3">
+        ニックネーム
+    </label>
+    <input type="text" name='nickname' class="form-control ms-3" placeholder="ニックネーム" style="width: 50%;">
+
     <label class="my-3">
         パスワード
     </label>

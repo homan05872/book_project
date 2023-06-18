@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block head %}<link href="{% static 'css/account/login.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+<div class="container login_section">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card text-center">
+        <div class="card-body m-3">
+        <h1>{% trans "Sign In" %}</h1>
+
+        {% get_providers as socialaccount_providers %}
+
+        {% if socialaccount_providers %}
+        <p>{% blocktrans with site.name as site_name %}If you have not created an account yet, then please sign up first.
+          Or a<a href="{{ signup_url }}">signup</a>
+        for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+      <ul class="socialaccount_providers">
+        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+      </ul>
+
+   <div class="login-or">{% trans 'or' %}</div>
+
+</div>
+
+          {% include "socialaccount/snippets/login_extra.html" %}
+
+          {% else %}
+          <p class='mt-4'>{% blocktrans %}もしまだアカウントをお持ちでない方は<br>
+          <a href="{{ signup_url }}">こちら</a>からサインアップをお願いします。{% endblocktrans %}</p>
+          {% endif %}
+      <div class='text-start'>
+        <form class="login m-4" method="POST" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          {{ form|crispy }}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          
+          <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+          <!--リセットパスワード　メール機能を付けてないためコメントアウト-->
+          {% comment %} <a class="button secondaryAction ms-3" href="{% url 'account_reset_password' %}"><small>{% trans "Forgot Password?" %}</small></a> {% endcomment %}
+        </form>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
