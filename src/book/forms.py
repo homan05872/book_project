@@ -13,7 +13,10 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ("text", "rate")
-       
+        labels={
+           'text':'コメント',
+           'rate':'評価',
+           }
 
     
 class BookNameSearch(forms.ModelForm):

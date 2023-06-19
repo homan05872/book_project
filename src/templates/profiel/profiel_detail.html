@@ -25,9 +25,9 @@
     {% endfor %}
 
 
-<div class="container pt-5">
+<div class="container-fluid pt-5">
     <div class="row d-flex justify-content-center">
-        <div class="col-lg-7 mx-auto text-center">
+        <div class="col-lg-7 col-md-12 text-center p-0">
             <div class="card ms-5 me-5">
                 {% if request.user == profiel.outher %}
                 <h5 class="card-header">マイプロフィール</h5>
@@ -71,21 +71,22 @@
     <div class="card-effect h-100">
 
         <div class="card_body">
-            <div class="d-flex justify-content-center" style="min-height: 195px;">
+            <div class="d-flex justify-content-center">
                 {% if mybook.thumbnail %}
-                <img src="{{ mybook.thumbnail.url }}" class="card_img w-100" style="min-height: 195px;"><br>
+                <img src="{{ mybook.thumbnail.url }}" class="img-thumbnail" style='max-hight: 20vh;'><br>
+                {% comment %} style='max-height: 20vh;' {% endcomment %}
                 {% else %}
-                <img src= "{% static '/image/default-image.png' %}" class="card_img w-100">
+                <img src= "{% static '/image/default-image.png' %}" class="img-thumbnail" style='max-hight: 20vh;'>
                 {% endif %}
             </div>    
-        <div class="card_text">
+        <div class="card_text d-flex flex-column justify-content-between">
             <small>書籍名：</small>
             <h5 class="card-title">{{mybook.bookname}}</h5>
 
             <small>タイトル：</small>
             <p>{{mybook.subtitle}}</p>
         
-            <p class="m-2">カテゴリ:{{mybook.category}}</p>
+            <p>カテゴリ:{{mybook.category}}</p>
         </div>
     </div>
 </div>

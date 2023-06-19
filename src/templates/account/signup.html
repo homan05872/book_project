@@ -9,9 +9,10 @@
 {% block head %}<link href="{% static 'css/account/login.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
-<div class="container login_section">
+<div class="hero vh-100 d-flex align-items-center" id="login_section">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-4 mx-auto">
       <div class="card text-center">
         <div class="card-body m-3">
           <h1>{% trans "Sign Up" %}</h1>
@@ -20,12 +21,12 @@
           <div class='text-start'>
           <form class="signup m-4" id="SignupForm" method="post" action="{% url 'accounts:signup' %}">
             {% csrf_token %}
+            <p class='mt-4'>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
             {{ form|crispy }}
             {% if redirect_field_value %}
             <input  type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
             <button class='btn btn-primary mt-1' type="submit">{% trans "Sign Up" %} &raquo;</button>
-            <p class='mt-4'>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
           </form>
           </div>
         </div>

@@ -32,7 +32,7 @@
 
 {% block content %}
 <div id="listpage">
-<h1 class='mb-5 pt-5'>Book 一覧ページ</h1>
+<h1 class='display-4 mb-5 pt-5 text-center'>Book 一覧ページ</h1>
     
 <div class="container">
   <!--検索フォーム-->
@@ -48,11 +48,21 @@
         <a href="{% url 'booklist' %}" class="btn btn-outline-primary">クリア</a>  
     </div>
 
-      <div class="col-lg-12">
+      <div class="col-lg-12 d-flex align-items-center">
         <div class="plus_icon">
           <a href="{% url 'create' %}">
           <i class="bi bi-plus-square-fill"></i>
           </a>
+        </div>
+      
+        <div class="dropdown mt-1 ms-3 p-1">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            ビューの切り替え
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="{% url 'booklist' %}">カードビュー</a></li>
+            <li><a class="dropdown-item" href="{% url 'booktable' %}">テーブルビュー</a></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -62,38 +72,67 @@
 
 <!--Book一覧-->
 <section id="booklist">
-<div class="container">
-<div class="row">
+  <div class="container">
+    <div class="row">
 
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="row">#</th>
-        <th scope="col">書籍名</th>
-        <th scope="col">タイトル</th>
-        <th scope="col">カテゴリ</th>
-        <th scope="col">ユーザー</th>
-        <th scope="col">性別</th>
-      </tr>
-    </thead>
-    <tbody>
+
         {% for book in book_list %}
-      <tr>
-        <th scope="row">{{book.pk}}</th>
-        
-        <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a></td>
-        <td>{{book.subtitle}}</td>
-        <td>{{book.category}}</td>
-        <td><a class='indexlink' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">{{book.created_by.profiels.nickname}}</a></td>
-        {% if book.created_by.profiels.sex %}
-        <td>{{book.created_by.profiels.sex}}</td>
-        {% else %}
-        <td>未公開</td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        <div class="col-lg-12">
+          <div class="card w-100 my-4 p-4">
+            <div class="row">
+              <div class="col-lg-10">
+                <a class='indexlink' href="{% url 'detail' book.pk %}">
+                <h2 class='ms-5'>{{book.bookname}}</h2>
+              </div>
+              <div class="col-lg-4 d-flex justify-content-center col-md-10 m-0 mt-4">
+              {% if book.thumbnail %}
+              <img src="{{ book.thumbnail.url }}" class='img-thumbnail'>
+              <br>
+              {% else %}
+              <img src="{% static 'image/default-image.png' %}" class='img-thumbnail'>
+              {% endif %}
+            </a>
+              </div>
+            
+            <div class="col-lg-6 col-md-10 mt-4 d-flex flex-column  justify-content-between">
+              <div class='d-flex align-items-center'>
+                <span><small>タイトル：</small></span>
+                <h4 class='m-0'>{{book.subtitle}}</h4>
+              </div>
+              <div class='mt-2 d-flex align-items-center'>
+                <span><small>カテゴリ：</small></span>
+                <p class='m-0'>{{book.category}}</p>
+              </div>
+              <div class='mt-2 d-flex align-items-center'>
+                <span><small>投稿日時：</small></span>
+                <p class='m-0'>{{book.timestamp}}</p>
+              </div>
+              <a class='profiel_link' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">
+                
+              <div class="card profiel_card w-50 mt-2">
+                <div class='d-flex align-items-center'>
+                  {% if book.created_by.profiels.img %}
+                    <img src="{{ book.created_by.profiels.img.url }}" class="profiel-img m-2">
+                    {% else %}
+                    <img src="{% static 'image/default-image.png' %}" class="profiel-img m-2">
+                    {% endif %}
+                  <p class='m-0 mx-2 user_name'>{{book.created_by.profiels.nickname}}</p>
+                <span class='ms-3'><small>性別：</small></span>
+                {% if book.created_by.profiels.sex %}</p>
+                <p class='m-0'>{{book.created_by.profiels.sex}}</p>
+                {% else %}
+                <p class='m-0'>未公開</p>
+                {% endif %}
+                </div>
+              </div>
+              </a>
+            </div>
+            </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
 </div>
 <!--ページネーション-->
 <div class="d-flex justify-content-center" >
@@ -119,9 +158,10 @@
   </ul>
 </div>
 </div>
+</div>
 </section>
 
 
 
-</div>
+
 {% endblock content %}

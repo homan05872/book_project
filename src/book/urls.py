@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path('', views.IndexBook.as_view(), name='index'),
     path('list/', views.ListBook.as_view(), name='booklist'),
+    path('listtable/', views.ListTableBook.as_view(), name='booktable'),
     path('detail/<int:pk>/', views.DetailBook.as_view(), name='detail'),
     path('create/', views.CreateBook.as_view(), name='create'),
     path('update/<int:pk>/', views.UpdateBook.as_view(), name='update'),

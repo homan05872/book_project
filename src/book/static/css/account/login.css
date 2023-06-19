@@ -1,21 +1,5 @@
-.test{
-    color: brown;
-}
-
-div.container.login_section{
-    padding: 120px;
-    position: relative;
-    height: 115vh;
-    width: 100vh;
-    align-items: center;
-    justify-content: center;
-}
-
 .card{
     background-color:rgba(255, 255, 255, 0.575);
     background-blend-mode:lighten;
     border-radius: 20%;
-    position: absolute;
-    width: 500px;
-    margin: 0 auto;
 }

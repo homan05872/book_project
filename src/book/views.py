@@ -37,7 +37,22 @@ class IndexBook(TemplateView):
 class ListBook(ListView):
     model = Book
     context_object_name = "book_list"
+    paginate_by = 6
+    
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset(**kwargs).select_related('created_by__profiels').all().order_by('-timestamp') #←super().get_queryset(**kwargs)の部分はself.model.objectsでも代用可能！
+        q = self.request.GET
+        
+        if book := q.get('book'):
+            qs = self.model.objects.select_related('created_by__profiels').filter(Q(bookname__contains=book)|Q(subtitle__contains=book)).all().order_by('-timestamp')
+            
+        return qs
+    
+class ListTableBook(ListView):
+    model = Book
+    context_object_name = "book_list"
     paginate_by = 10
+    template_name = 'book/book_table.html'
     
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs).select_related('created_by__profiels').all().order_by('-timestamp') #←super().get_queryset(**kwargs)の部分はself.model.objectsでも代用可能！
@@ -104,8 +119,14 @@ class ReviewCreate(LoginRequiredMixin,CreateView):
         comment = form.save(commit=False)
         comment.book = book
         comment.save()
- 
         return redirect('detail', pk=book_pk)
+    
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.WARNING, form.errors)
+        book_pk = self.kwargs.get('pk')
+        return redirect('detail', pk=book_pk )
+    
+    
         
 
 # @login_required
