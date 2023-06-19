@@ -83,7 +83,6 @@
         <th scope="col">タイトル</th>
         <th scope="col">カテゴリ</th>
         <th scope="col">ユーザー</th>
-        <th scope="col">性別</th>
       </tr>
     </thead>
     <tbody>
@@ -94,13 +93,26 @@
         <td><a class='indexlink' href="{% url 'detail' book.pk %}">{{book.bookname}}</a></td>
         <td>{{book.subtitle}}</td>
         <td>{{book.category}}</td>
-        <td><a class='indexlink' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">{{book.created_by.profiels.nickname}}</a></td>
-        {% if book.created_by.profiels.sex %}
-        <td>{{book.created_by.profiels.sex}}</td>
-        {% else %}
-        <td>未公開</td>
-        {% endif %}
-      </tr>
+        <td>
+          <a class='profiel_link' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">
+          <div class="card profiel_card mt-2">
+          <div class='d-flex align-items-center'>
+            {% if book.created_by.profiels.img %}
+              <img src="{{ book.created_by.profiels.img.url }}" class="profiel-img m-2">
+              {% else %}
+              <img src="{% static 'image/default-image.png' %}" class="profiel-img m-2">
+              {% endif %}
+            <p class='m-0 mx-2 user_name'>{{book.created_by.profiels.nickname}}</p>
+          <span class='ms-3'><small>性別：</small></span>
+          {% if book.created_by.profiels.sex %}</p>
+          <p class='m-0'>{{book.created_by.profiels.sex}}</p>
+          {% else %}
+          <p class='m-0'>未公開</p>
+          {% endif %}
+          </div>
+        </div>
+        </a>
+      </td>
       {% endfor %}
     </tbody>
   </table>

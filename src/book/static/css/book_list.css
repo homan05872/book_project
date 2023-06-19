@@ -13,7 +13,9 @@
     background-blend-mode:lighten;
 }
 
+
 .card .profiel_card{
+    color: #21252f;
     background-color: #fff;
     transition: all 0.35s ease;
 }
