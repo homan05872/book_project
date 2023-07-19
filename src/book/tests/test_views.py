@@ -7,13 +7,15 @@ from .. import views
 from django.shortcuts import render, redirect
 
 UserModel = get_user_model()
+from accounts.models import User
 
 class View_test_access(TestCase):
     
     def setUp(self):
         #Userモデル作成
-        self.user = UserModel.objects.create(
-            username='test_user',
+        self.user = User.objects.create(
+            email='test_user',
+            nickname='test_user',
             password='top_secret_001'
         )
         self.client.force_login(self.user)
@@ -41,7 +43,7 @@ class View_test_access(TestCase):
         delete_view = resolve('/delete/1/')
         self.assertEquals(index_view.func.view_class, views.IndexBook)
         self.assertEquals(list_view.func.view_class, views.ListBook)
-        self.assertEquals(detail_view.func, views.detailBook)
+        self.assertEquals(detail_view.func.view_class, views.DetailBook)
         self.assertEquals(create_view.func.view_class, views.CreateBook)
         self.assertEquals(update_view.func.view_class, views.UpdateBook)
         self.assertEquals(delete_view.func.view_class, views.DeleteBook)
@@ -50,8 +52,9 @@ class View_test_access(TestCase):
 class list_view_test(TestCase):
     def setUp(self):
         #Userモデル作成
-        self.user = UserModel.objects.create(
-            username='test_user',
+        self.user = User.objects.create(
+            email='test_user',
+            nickname='test_user',
             password='top_secret_001'
         )
         self.client.force_login(self.user)
@@ -133,8 +136,9 @@ class list_view_test(TestCase):
 class Detail_view_test(TestCase):
     def setUp(self):
         #Userモデル作成
-        self.user = UserModel.objects.create(
-            username='test_user',
+        self.user = User.objects.create(
+            email='test_user',
+            nickname='test_user',
             password='top_secret_001'
         )
         self.client.force_login(self.user)
@@ -171,8 +175,9 @@ class Create_view_test(TestCase):
     
     def setUp(self):
         #Userモデル作成
-        self.user = UserModel.objects.create(
-            username='test_user',
+        self.user = User.objects.create(
+            email='test_user',
+            nickname='test_user',
             password='top_secret_001'
         )
         self.client.force_login(self.user)
@@ -205,8 +210,9 @@ class Create_view_test(TestCase):
 class Update_view_test(TestCase):
     def setUp(self):
         #Userモデル作成
-        self.user = UserModel.objects.create(
-            username='test_user',
+        self.user = User.objects.create(
+            email='test_user',
+            nickname='test_user',
             password='top_secret_001'
         )
         self.client.force_login(self.user)
@@ -258,8 +264,9 @@ class Update_view_test(TestCase):
 class DeleteTest(TestCase):
     def setUp(self):
         #Userモデル作成
-        self.user = UserModel.objects.create(
-            username='test_user',
+        self.user = User.objects.create(
+            email='test_user',
+            nickname='test_user',
             password='top_secret_001'
         )
         self.client.force_login(self.user)

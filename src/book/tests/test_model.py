@@ -2,7 +2,9 @@ from django.test import TestCase
 from book.models import Book,Review,Profiel
 from django.contrib.auth import get_user_model
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as change
+
+from accounts.models import User
 
 UserModel = get_user_model()
 
@@ -26,7 +28,7 @@ class ModelTests(TestCase):
         
     def test_user_is_empty(self):
         "Userモデルの存在確認"
-        saved_posts = UserModel.objects.all()
+        saved_posts = User.objects.all()
         self.assertEqual(saved_posts.count(), 0)
         
         
@@ -34,7 +36,7 @@ class CreateTest(TestCase):
     
     def test_UserModel_create(self):
         """Userモデル作成テスト(同時にProfielモデルも自動作成)"""
-        user = UserModel(username="test_user",password="top_secret_001")
+        user = User(email="test_user", nickname="test_user", password="top_secret_001")
         user.save()
         saved_users = User.objects.all()
         saved_profiels = Profiel.objects.all()
@@ -43,15 +45,15 @@ class CreateTest(TestCase):
         
         saved_user = User.objects.get(pk=1)
         saved_profiel = Profiel.objects.get(pk=1)
-        self.assertEqual(saved_profiel.nickname,saved_user.username)
+        self.assertEqual(saved_profiel.nickname,saved_user.nickname)
         
     def test_book_create(self):
         """Bookモデル作成テスト"""
-        user = UserModel(username="test_user",password="top_secret_001")
+        user = User(email="test_user", nickname="test_user", password="top_secret_001")
         user.save()
         
         book = Book(bookname="testbook", subtitle="testbook", text="text", category="ビジネス")
-        book.created_by=UserModel.objects.get(pk=1)
+        book.created_by=User.objects.get(pk=1)
         book.profiel_connect = Profiel.objects.get(pk = 1)
         book.save()
         saved_books = Book.objects.all()
@@ -62,15 +64,15 @@ class CreateTest(TestCase):
     
     def test_Review_create(self):
         """reviewモデル作成テスト"""
-        user = UserModel(username="test_user",password="top_secret_001")
+        user = User(email="test_user", nickname="test_user", password="top_secret_001")
         user.save()
         book = Book(bookname="testbook", subtitle="testbook", text="text", category="ビジネス")
-        book.created_by=UserModel.objects.get(pk=1)
+        book.created_by=User.objects.get(pk=1)
         book.profiel_connect = Profiel.objects.get(pk = 1)
         book.save()
         
         review = Review(text="testtext", rate="1")
-        review.created_by=UserModel.objects.get(pk=1)
+        review.created_by=User.objects.get(pk=1)
         review.book = Book.objects.get(pk = 1)
         review.save()
         saved_books = Review.objects.all()
@@ -82,10 +84,10 @@ class UpdateTest(TestCase):
     
     def test_update_book(self):
         """Book_Updateテスト"""
-        user = UserModel(username="test_user",password="top_secret_001")
+        user = User(email="test_user", nickname="test_user", password="top_secret_001")
         user.save()
         book = Book(bookname="testbook", subtitle="testbook", text="text", category="ビジネス")
-        book.created_by=UserModel.objects.get(pk=1)
+        book.created_by=User.objects.get(pk=1)
         book.profiel_connect = Profiel.objects.get(pk = 1)
         book.save()
         
@@ -104,7 +106,7 @@ class UpdateTest(TestCase):
         
     def test_update_Profiel(self):
         """Book_Profeilテスト"""
-        user = UserModel(username="test_user",password="top_secret_001")
+        user = User(email="test_user", nickname="test_user", password="top_secret_001")
         user.save()
         
         profiel = Profiel.objects.get(pk=1)
@@ -124,10 +126,10 @@ class DeleteTest(TestCase):
     
     def test_delete_book(self):
         """Book_Deleteテスト"""
-        user = UserModel(username="test_user",password="top_secret_001")
+        user = User(email="test_user", nickname="test_user", password="top_secret_001")
         user.save()
         book = Book(bookname="testbook", subtitle="testbook", text="text", category="ビジネス")
-        book.created_by=UserModel.objects.get(pk=1)
+        book.created_by=User.objects.get(pk=1)
         book.profiel_connect = Profiel.objects.get(pk = 1)
         book.save()
         
