@@ -109,7 +109,7 @@
               </div>
               <a class='profiel_link' href="{% url 'accounts:profiel_detail' book.created_by.profiels.pk %}">
                 
-              <div class="card profiel_card w-50 mt-2">
+              <div class="card profiel_card w-100 mt-2">
                 <div class='d-flex align-items-center'>
                   {% if book.created_by.profiels.img %}
                     <img src="{{ book.created_by.profiels.img.url }}" class="profiel-img m-2">

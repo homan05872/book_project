@@ -1,12 +1,11 @@
 :root{
-    --primary: #0d6efd;
     --dark: #21252f;
     --body: #888;
     --box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
 }
 
-.card-img, .card-img-bottom, .card-img-top {
-    height: 40%;
+img.img-thumbnail{
+  max-height: 24vh !important;
 }
 
 #mybook_list{

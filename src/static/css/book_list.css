@@ -1,7 +1,41 @@
 :root{
-    --primary: #0d6efd;
     --dark: #21252f;
     --body: #888;
+    --box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+/* *{
+    outline: 2px red solid;
+} */
+
+.card{
+    background-color:rgba(255, 255, 255, 0.575);
+    background-blend-mode:lighten;
+}
+
+
+.card .profiel_card{
+    color: #21252f;
+    background-color: #fff;
+    transition: all 0.35s ease;
+}
+/* #eceef0 */
+.card .profiel_card:hover{
+    color: #21252f;
+    background-color: white;
+    border-color: #a2a3a5;
+    box-shadow: 0 0 0 0.25rem rgba(102, 102, 102, 0.153);
+  }
+
+
+.profiel-img{
+    height: 5vh;
+    width: 5vh;
+    border-radius: 50%;
+  }
+
+.user_name{
+    font-size: 1.2rem;
 }
 
 #listpage{
@@ -11,22 +45,39 @@
     background-blend-mode:lighten;
 }
 
+.img-thumbnail{
+    max-height: 250px;
+    max-width: 100%;
+    transition: all 0.35s ease;
+    box-shadow: var(--box-shadow);
+}
+
+.img-thumbnail:hover{
+    box-shadow: none;     /*hoverしたときに影を出ないようにする*/
+    transform: translateY(5px); /*ボックスシャドウに対して５px沈むように設定*/
+  }
 
 #booklist div.container{
-    padding-bottom: 500px;
+    padding-bottom: 50px;
 }
 
-h1{
-    text-align: center;
-}
+
 
 a.indexlink{
     color:inherit;
     text-decoration: none;
     color: #b22222;
-    border-bottom:2px solid #b22222;
 }
 
+a.indexlink:hover{
+    color: #921c1c;
+}
+
+.profiel_link{
+    color: none;
+    text-decoration: none;
+    color: var(--dark);
+}
 
 .search-form{
     width: 70%;
@@ -52,3 +103,6 @@ div.plus_icon a:hover{
     font-size: 50px;
 }
 
+div.d-flex.justify-content-center{
+    margin: 80px;
+}
